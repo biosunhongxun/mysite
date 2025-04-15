@@ -1,19 +1,36 @@
-/* 强制全局背景色 */
-:root {
-  --primary-blue: rgb(60, 118, 153);
+/* 设置顶部导航栏背景颜色 */
+.md-header {
+  background-color: rgb(60, 118, 153) !important;
 }
 
-/* 仅修改必要的背景部分 */
-.md-header,
-.md-tabs,
-.md-sidebar--primary,
-.md-nav__list,
-.md-footer {
-  background-color: var(--primary-blue) !important;
+/* 设置 tab 导航栏背景颜色（如果你启用了 tabs） */
+.md-tabs {
+  background-color: rgb(60, 118, 153) !important;
 }
 
-/* 恢复Material默认文字可读性 */
-.md-typeset {
-  color: #333; /* 恢复默认深灰文字 */
-  background-color: white; /* 内容区保持白底 */
+/* GitHub 图标等图标变白色，看得清楚 */
+.md-header__button,
+.md-header__topic,
+.md-header__option {
+  color: white !important;
+}
+
+/* 设置侧边栏（一级和二级）菜单背景颜色 */
+.md-nav__list {
+  background-color: rgb(60, 118, 153) !important;
+}
+
+/* 设置菜单文字颜色为白色 */
+.md-nav__link {
+  color: white !important;
+}
+
+/* 鼠标悬停时的菜单文字颜色（浅灰色） */
+.md-nav__link:hover {
+  color: #f0f0f0 !important;
+}
+
+/* 当前激活的菜单项颜色（浅灰色） */
+.md-nav__link--active {
+  color: #f0f0f0 !important;
 }
