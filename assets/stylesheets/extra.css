@@ -1,79 +1,54 @@
-/* 顶部导航栏 */
-.md-header,
-.md-tabs {
-  background-color: rgb(60, 118, 153) !important;
-}
-.md-header__button,
-.md-header__topic,
-.md-header__option {
-  color: white !important;
-}
-
-/* 通用菜单文字样式 */
+/* 通用链接样式（含动画） */
 .md-nav__link {
-  color: white !important;
-}
-.md-nav__link:hover,
-.md-nav__link--active {
-  color: #f0f0f0 !important;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-/* 全局侧边栏背景颜色设置 */
-.md-sidebar,
-.md-sidebar__inner,
-.md-nav,
-.md-nav__list,
-.md-nav__item {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: none !important;
   background-color: rgb(60, 118, 153) !important;
   color: white !important;
+  border-radius: 0 !important;
+  padding: 0.4rem 1rem;
 }
 
-/* 桌面端下，进一步强制覆盖所有 sidebar 区块 */
-@media screen and (min-width: 76.25em) {
-  .md-sidebar,
-  .md-sidebar__inner,
-  .md-sidebar--primary,
-  .md-sidebar--secondary,
-  .md-nav,
-  .md-nav__list,
-  .md-nav__item,
-  .md-nav__link {
-    background-color: rgb(60, 118, 153) !important;
-    color: white !important;
-  }
-
-  .md-nav__link--active,
-  .md-nav__link:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    color: #ffffff !important;
-  }
-}
-/* 修复侧边栏链接 hover / 选中 状态的背景白边 */
-.md-nav__item,
-.md-nav__link {
-  background-color: rgb(60, 118, 153) !important;
-  color: white !important;
-}
-
-/* 修复悬停状态的白边 */
+/* 悬停/激活时的效果（子菜单也统一） */
 .md-nav__link:hover,
+.md-nav__link:focus,
 .md-nav__link--active {
   background-color: rgba(255, 255, 255, 0.15) !important;
   color: #ffffff !important;
-}
-
-/* 特别修复嵌套菜单 hover 时的白边闪现 */
-.md-nav__item--nested > .md-nav__link {
-  background-color: rgb(60, 118, 153) !important;
-}
-
-/* 避免点击时边缘闪白 */
-.md-nav__link:focus-within {
   outline: none !important;
+}
+
+/* 彻底去除白边：父级嵌套元素 margin/padding 归零 */
+.md-nav__item,
+.md-nav__item--nested,
+.md-nav__item--nested > .md-nav__link,
+.md-nav__list {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: rgb(60, 118, 153) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* 防止嵌套列表 hover 出现边界闪白 */
+.md-nav__item--nested > .md-nav__link:hover,
+.md-nav__item--nested > .md-nav__link:focus {
   background-color: rgba(255, 255, 255, 0.15) !important;
 }
-.md-nav__link {
-  transition: background-color 0.3s ease;
-  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+
+/* 去除点击时的默认 outline */
+.md-nav__link:focus-within {
+  outline: none !important;
+}
+
+/* 修复嵌套菜单展开时白线或过渡闪烁 */
+.md-nav__toggle:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* 保证子菜单列表也无缝融入背景色 */
+.md-nav__list {
+  background-color: rgb(60, 118, 153) !important;
+  border: none !important;
 }
