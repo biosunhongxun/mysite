@@ -62,3 +62,27 @@ button:hover, .md-button:hover {
     background-color: var(--md-default-bg-color);
   }
 }
+/* 修复导航栏字体不可见的问题 */
+.md-header {
+  background-color: var(--md-primary-fg-color);  /* 使用主题主色 */
+  color: var(--md-primary-bg-color);  /* 通常是白色，自动反转对比 */
+}
+
+/* 确保文字颜色继承一致 */
+.md-header .md-header__title,
+.md-header .md-header__button,
+.md-header .md-header__topic,
+.md-nav__title,
+.md-nav__link {
+  color: var(--md-primary-bg-color);  /* 白色文字 */
+}
+
+.md-header .md-header__title:hover,
+.md-header .md-nav__link:hover {
+  opacity: 0.85;
+}
+
+/* 修复移动端菜单按钮颜色 */
+.md-header__button.md-icon {
+  color: var(--md-primary-bg-color);
+}
