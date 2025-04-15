@@ -1,0 +1,16 @@
+/* 设置顶部导航栏背景颜色 */
+.md-header {
+  background-color: rgb(60, 118, 153) !important;
+}
+
+/* 设置 tab 导航栏背景颜色（如果你启用了 tabs） */
+.md-tabs {
+  background-color: rgb(60, 118, 153) !important;
+}
+
+/* GitHub 图标等图标变白色，看得清楚 */
+.md-header__button,
+.md-header__topic,
+.md-header__option {
+  color: white !important;
+}
