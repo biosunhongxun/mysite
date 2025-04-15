@@ -1,54 +1,51 @@
-/* 设置顶部导航栏背景颜色 */
-.md-header {
-  background-color: rgb(60, 118, 153) !important;
-}
-
-/* 设置 tab 导航栏背景颜色（如果你启用了 tabs） */
+/* 顶部导航栏 */
+.md-header,
 .md-tabs {
   background-color: rgb(60, 118, 153) !important;
 }
-
-/* GitHub 图标等图标变白色，看得清楚 */
 .md-header__button,
 .md-header__topic,
 .md-header__option {
   color: white !important;
 }
 
-/* 设置侧边栏（一级和二级）菜单背景颜色 */
-.md-nav__list {
-  background-color: rgb(60, 118, 153) !important;
-}
-
-/* 设置菜单文字颜色为白色 */
+/* 通用菜单文字样式 */
 .md-nav__link {
   color: white !important;
 }
-
-/* 鼠标悬停时的菜单文字颜色（浅灰色） */
-.md-nav__link:hover {
-  color: #f0f0f0 !important;
-}
-
-/* 当前激活的菜单项颜色（浅灰色） */
-.md-nav__link--active {
-  color: #f0f0f0 !important;
-}
-/* 修改侧边栏背景色 */
-.md-sidebar,
-.md-sidebar__inner,
-.md-nav,
-.md-nav__list,
-.md-nav__item,
-.md-nav__link {
-  background-color: rgb(60, 118, 153) !important;
-  color: white !important;
-}
-
-/* 修改活动链接 hover 高亮 */
 .md-nav__link:hover,
 .md-nav__link--active {
   color: #f0f0f0 !important;
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
+/* 全局侧边栏背景颜色设置 */
+.md-sidebar,
+.md-sidebar__inner,
+.md-nav,
+.md-nav__list,
+.md-nav__item {
+  background-color: rgb(60, 118, 153) !important;
+  color: white !important;
+}
+
+/* 桌面端下，进一步强制覆盖所有 sidebar 区块 */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar,
+  .md-sidebar__inner,
+  .md-sidebar--primary,
+  .md-sidebar--secondary,
+  .md-nav,
+  .md-nav__list,
+  .md-nav__item,
+  .md-nav__link {
+    background-color: rgb(60, 118, 153) !important;
+    color: white !important;
+  }
+
+  .md-nav__link--active,
+  .md-nav__link:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+}
