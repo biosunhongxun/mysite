@@ -52,3 +52,17 @@
   background-color: rgb(60, 118, 153) !important;
   border: none !important;
 }
+
+/* 顶部导航栏样式优化 */
+.md-header {
+  background-color: rgb(60, 118, 153) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.md-header__title,
+.md-header__button,
+.md-header a {
+  background-color: rgb(60, 118, 153) !important;
+  color: white !important;
+}
