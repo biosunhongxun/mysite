@@ -36,3 +36,44 @@
 .md-nav__link--active {
   color: #f0f0f0 !important;
 }
+/* 修复下拉菜单背景和字体颜色，使其清晰可见 */
+.md-nav__item .md-nav__list {
+  background-color: rgba(30, 60, 90, 0.95) !important; /* 深蓝毛玻璃感背景 */
+  padding: 0.4em;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 二级菜单项：字体颜色、间距 */
+.md-nav__item .md-nav__list .md-nav__link {
+  color: white !important;
+  padding: 0.3em 1em;
+  border-radius: 5px;
+  transition: background 0.2s ease;
+}
+
+/* 悬停效果：亮一点背景，增强可视反馈 */
+.md-nav__item .md-nav__list .md-nav__link:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+/* 修复下拉菜单背景和字体颜色，使其清晰可见 */
+.md-nav__item .md-nav__list {
+  background-color: rgba(30, 60, 90, 0.95) !important; /* 深蓝毛玻璃感背景 */
+  padding: 0.4em;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 二级菜单项：字体颜色、间距 */
+.md-nav__item .md-nav__list .md-nav__link {
+  color: white !important;
+  padding: 0.3em 1em;
+  border-radius: 5px;
+  transition: background 0.2s ease;
+}
+
+/* 悬停效果：亮一点背景，增强可视反馈 */
+.md-nav__item .md-nav__list .md-nav__link:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
