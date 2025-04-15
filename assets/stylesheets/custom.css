@@ -1,0 +1,64 @@
+/* custom.css - 极简清爽风格 */
+
+/* 字体优化：使用 Inter 字体（如果加载不到则用系统字体） */
+body, .md-typeset {
+  font-family: "Inter", "Helvetica Neue", "Segoe UI", "Arial", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--md-default-fg-color);
+  background-color: var(--md-default-bg-color);
+}
+
+/* 链接样式：去下划线，轻微动画 */
+a {
+  text-decoration: none;
+  color: var(--md-typeset-a-color);
+  transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
+}
+
+a:hover {
+  color: var(--md-accent-fg-color);
+  text-decoration: underline;
+}
+
+/* 表格优化 */
+.md-typeset table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.md-typeset table th,
+.md-typeset table td {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+}
+
+/* 按钮/交互元素动效 */
+button, .md-button {
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+button:hover, .md-button:hover {
+  transform: translateY(-2px);
+}
+
+/* 页脚与页眉恢复默认颜色，保持统一 */
+.md-header, .md-footer {
+  background-color: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  box-shadow: none;
+}
+
+/* 页脚内容居中 */
+.md-footer-meta__inner {
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+/* 深色模式适配：自动使用默认变量 */
+@media (prefers-color-scheme: dark) {
+  body {
+    color: var(--md-default-fg-color);
+    background-color: var(--md-default-bg-color);
+  }
+}
