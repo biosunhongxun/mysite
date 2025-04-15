@@ -76,4 +76,14 @@
 .md-nav__item .md-nav__list .md-nav__link:hover {
   background-color: rgba(255, 255, 255, 0.15) !important;
 }
+/* 确保侧边栏和导航容器的背景一致 */
+.md-sidebar,
+.md-nav,
+.md-nav__list {
+  background-color: rgb(60, 118, 153) !important;
+}
 
+/* 针对 Material 主题的侧边栏 */
+.md-sidebar--primary {
+  background-color: rgb(60, 118, 153) !important;
+}
