@@ -14,3 +14,25 @@
 .md-header__option {
   color: white !important;
 }
+
+/* 设置侧边栏（一级和二级）菜单背景颜色 */
+.md-nav__list {
+  background-color: rgb(60, 118, 153) !important;
+  /* 添加右边阴影，使菜单更有层次感 */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 设置菜单文字颜色为白色 */
+.md-nav__link {
+  color: white !important;
+}
+
+/* 鼠标悬停时的菜单文字颜色（浅灰色） */
+.md-nav__link:hover {
+  color: #f0f0f0 !important;
+}
+
+/* 当前激活的菜单项颜色（浅灰色） */
+.md-nav__link--active {
+  color: #f0f0f0 !important;
+}
