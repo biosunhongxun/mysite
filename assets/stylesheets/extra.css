@@ -49,3 +49,31 @@
     color: #ffffff !important;
   }
 }
+/* 修复侧边栏链接 hover / 选中 状态的背景白边 */
+.md-nav__item,
+.md-nav__link {
+  background-color: rgb(60, 118, 153) !important;
+  color: white !important;
+}
+
+/* 修复悬停状态的白边 */
+.md-nav__link:hover,
+.md-nav__link--active {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+
+/* 特别修复嵌套菜单 hover 时的白边闪现 */
+.md-nav__item--nested > .md-nav__link {
+  background-color: rgb(60, 118, 153) !important;
+}
+
+/* 避免点击时边缘闪白 */
+.md-nav__link:focus-within {
+  outline: none !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+.md-nav__link {
+  transition: background-color 0.3s ease;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+}
