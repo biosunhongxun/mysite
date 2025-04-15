@@ -34,3 +34,21 @@
 .md-nav__link--active {
   color: #f0f0f0 !important;
 }
+/* 修改侧边栏背景色 */
+.md-sidebar,
+.md-sidebar__inner,
+.md-nav,
+.md-nav__list,
+.md-nav__item,
+.md-nav__link {
+  background-color: rgb(60, 118, 153) !important;
+  color: white !important;
+}
+
+/* 修改活动链接 hover 高亮 */
+.md-nav__link:hover,
+.md-nav__link--active {
+  color: #f0f0f0 !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
