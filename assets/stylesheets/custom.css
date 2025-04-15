@@ -157,3 +157,59 @@ a:hover, button:hover, .md-button:hover {
     background: #2d2d2d;
   }
 }
+
+/* —— 强制修复导航栏与侧边栏文字颜色 —— */
+
+/* 顶部导航栏整体背景和文字 */
+.md-header {
+  background: var(--primary-gradient) !important;
+}
+.md-header .md-header__inner,
+.md-header .md-header__row {
+  color: #fff !important;
+}
+
+/* 导航标题和按钮 */
+.md-header .md-header__title,
+.md-header .md-header__button,
+.md-header .md-nav__link {
+  color: #fff !important;
+}
+
+/* 下拉菜单项 */
+.md-header .md-nav__link--dropdown .md-nav__link {
+  color: #fff !important;
+}
+
+/* 移动端菜单图标 */
+.md-header .md-header__button.md-icon {
+  color: #fff !important;
+}
+
+/* 侧边栏背景与文字 */
+.md-sidebar--primary {
+  background: var(--secondary-gradient) !important;
+}
+.md-sidebar--primary .md-nav__link {
+  color: #fff !important;
+}
+
+/* 侧边栏折叠项 */
+.md-sidebar--primary .md-nav__link--active,
+.md-sidebar--primary .md-nav__link:hover {
+  background: rgba(255,255,255,0.2) !important;
+  color: #fff !important;
+}
+
+/* 确保深色模式下也正确 */
+@media (prefers-color-scheme: dark) {
+  .md-header,
+  .md-sidebar--primary {
+    background: var(--primary-gradient) !important;
+  }
+  .md-header .md-nav__link,
+  .md-sidebar--primary .md-nav__link {
+    color: #fff !important;
+  }
+}
+
