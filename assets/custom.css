@@ -1,0 +1,9 @@
+/* custom.css */
+.md-header, .md-footer {
+  background: #e3f2fd;
+}
+
+.md-footer-meta__inner {
+  justify-content: center;
+  font-size: 0.9rem;
+}
