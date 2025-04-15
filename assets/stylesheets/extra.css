@@ -1,74 +1,19 @@
-/* ===== 全局统一配色 ===== */
+/* 强制全局背景色 */
 :root {
   --primary-blue: rgb(60, 118, 153);
-  --primary-text: white;
-  --content-bg: rgba(245, 248, 250, 0.9); /* 内容区浅灰蓝背景 */
 }
 
-/* ===== 主要修复部分 ===== */
-/* 1. 移除主内容区默认白色背景 */
-.md-main,
-.md-content,
-.md-content__inner {
-  background-color: transparent !important;
-}
-
-/* 2. 修复侧边栏顶部白条 */
-.md-sidebar--primary {
-  border-right: none !important;
-  padding-top: 0 !important;
-}
-.md-sidebar__scrollwrap {
-  margin-top: -1px !important; /* 上移消除白边 */
-}
-
-/* 3. 侧边栏整体样式 */
+/* 仅修改必要的背景部分 */
+.md-header,
+.md-tabs,
 .md-sidebar--primary,
 .md-nav__list,
-.md-nav__title {
-  background-color: var(--primary-blue) !important;
-}
-
-/* ===== 您原有的样式增强 ===== */
-/* 顶部导航栏 */
-.md-header,
-.md-tabs {
-  background-color: var(--primary-blue) !important;
-  border-bottom: none !important;
-}
-
-/* 导航文字/图标 */
-.md-header__button,
-.md-header__title,
-.md-tabs__link,
-.md-nav__link {
-  color: var(--primary-text) !important;
-}
-
-/* 内容区域优化 */
-.md-typeset {
-  background-color: var(--content-bg);
-  padding: 1.5rem;
-  border-radius: 0;
-}
-
-/* 文章标题块 */
-.md-typeset h1:first-child {
-  background-color: var(--primary-blue);
-  color: var(--primary-text);
-  padding: 12px;
-  margin: 0 -1.5rem 1.5rem; /* 适应新padding */
-}
-
-/* 引用块 */
-.md-typeset blockquote {
-  border-left: 4px solid var(--primary-blue);
-  padding-left: 1.2rem;
-  background-color: transparent;
-}
-
-/* 底部版权 */
 .md-footer {
   background-color: var(--primary-blue) !important;
-  border-top: none !important;
+}
+
+/* 恢复Material默认文字可读性 */
+.md-typeset {
+  color: #333; /* 恢复默认深灰文字 */
+  background-color: white; /* 内容区保持白底 */
 }
