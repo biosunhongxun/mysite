@@ -110,3 +110,12 @@
     gap: 0.5rem;
   }
 }
+
+.md-footer-meta:after {
+  content: "Copyright © 2025 ~ now | shx 🇨🇳";
+  display: block;
+  text-align: center;
+  color: #3C7699;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
