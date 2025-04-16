@@ -1,34 +1,78 @@
-/* 完全移除侧边栏 */
+/* ========== 全局修复 ========== */
+.md-container {
+  display: flex !important;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.md-main {
+  flex-grow: 1;
+}
+
+/* ========== 导航系统修复 ========== */
+/* 主侧边栏修复 */
 .md-sidebar--primary {
-  display: none !important;
+  width: 240px !important;
+  background: var(--md-primary-bg-color) !important;
+  border-right: 1px solid rgba(60, 118, 153, 0.1);
 }
 
-/* 修复顶部黑条 */
-.md-header {
-  background: var(--md-primary-fg-color) !important;
-  box-shadow: none !important;
-}
-
-/* 强化横向导航 */
+/* 横向标签导航 */
 .md-tabs {
-  background: rgba(60, 118, 153, 0.08) !important;
-  border-bottom: 1px solid rgba(60, 118, 153, 0.15) !important;
+  background: rgba(60, 118, 153, 0.05);
+  border-bottom: 1px solid rgba(60, 118, 153, 0.1);
 }
 
 .md-tabs__link {
-  font-weight: 600;
-  padding: 0.8rem 1.2rem;
-  transition: all 0.2s;
+  color: var(--md-primary-fg-color) !important;
+  font-weight: 500;
+  padding: 0.8rem 1rem;
 }
 
 .md-tabs__link--active {
-  color: var(--md-primary-fg-color) !important;
-  border-bottom: 3px solid;
+  border-bottom: 2px solid;
 }
 
-/* 移动端优化 */
+/* ========== 颜色系统强化 ========== */
+:root {
+  --md-primary-fg-color: #3C7699;
+  --md-primary-fg-color--light: #5A9DB8;
+  --md-primary-fg-color--dark: #2C5A7A;
+  --md-accent-fg-color: #5A9DB8;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #3C7699;
+  --md-accent-fg-color: #5A9DB8;
+  --md-default-bg-color: #121212;
+}
+
+/* ========== 移动端优化 ========== */
 @media screen and (max-width: 76.1875em) {
   .md-nav--primary .md-nav__title {
     background: var(--md-primary-fg-color) !important;
+    color: white !important;
   }
+  
+  .md-nav__source {
+    background: var(--md-primary-fg-color--dark) !important;
+  }
+}
+
+/* ========== 内容区优化 ========== */
+.md-typeset h1 {
+  color: var(--md-primary-fg-color);
+  border-bottom: 2px solid rgba(60, 118, 153, 0.2);
+  padding-bottom: 0.3em;
+}
+
+.md-typeset a {
+  color: var(--md-primary-fg-color);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.md-typeset a:hover {
+  color: var(--md-primary-fg-color--dark);
+  text-decoration: none;
 }
