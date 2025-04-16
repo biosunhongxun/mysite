@@ -8,17 +8,15 @@ theme:
   logo: assets/images/myface.png
   language: zh
   
-  # 关键修改：简化features并修复导航冲突
   features:
     - navigation.tabs
-    - navigation.sections  # 替代navigation.top的更优方案
+    - navigation.sections
     - toc.integrate
     - content.code.copy
     - content.action.edit
     - search.highlight
     - search.share
 
-  # 颜色系统强化
   palette:
     scheme: default
     primary: '#3C7699'
@@ -27,7 +25,6 @@ theme:
       icon: material/weather-sunny
       name: 切换主题
 
-  # 字体优化
   font:
     text: 
       family: Roboto, "Noto Sans SC"
@@ -56,8 +53,7 @@ plugins:
   - git-revision-date-localized:
       type: timeago
       timezone: Asia/Shanghai
-  - glightbox:
-      touch_navigation: false  # 移除无效参数
+  - glightbox
   - awesome-pages
   - blog:
       blog_dir: blog
@@ -67,10 +63,18 @@ plugins:
       minify_js: true
       minify_css: true
 
+extra:
+  footer:
+    text: >
+      Copyright © <span id="year">2025</span> ~ now | 
+      <strong>shx</strong> <span class="flag">🇨🇳</span>
+    icon: fontawesome/solid/heart
+
 extra_css:
   - assets/stylesheets/custom.css
   - https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap
 
 extra_javascript:
+  - js/extra_javascript.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
