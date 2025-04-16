@@ -1,0 +1,91 @@
+site_name: GeneFlow
+site_url: http://geneflow.fun
+site_author: 孙红勋
+site_description: 记录读研期间的知识与故事
+
+theme:
+  name: material
+  logo: assets/images/myface.png
+  language: zh
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.top
+    - toc.integrate
+    - content.code.copy
+    - content.action.edit
+    - search.highlight
+    - search.share
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: teal
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: teal
+  font:
+    text: Poppins
+    code: Roboto Mono
+  icon:
+    repo: fontawesome/brands/github
+
+repo_url: https://github.com/biosunhongxun/mysite
+edit_uri: edit/main/docs/
+
+nav:
+  - 首页: index.md
+  - 关于我: about.md
+  - 项目:
+      - 分子实验: projects/Molecular.md
+      - 生信分析: projects/Analysis.md
+  - 教程笔记:
+      - Linux 入门: tutorials/linux-basic.md
+      - MkDocs 快速部署: tutorials/mkdocs-setup.md
+  - 博客:
+      - 敬过往: blog/story.md
+      - 爱当下: blog/love.md
+      - 向未来: blog/future.md
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - codehilite
+  - footnotes
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.details
+  - pymdownx.tabbed
+  - pymdownx.emoji
+  - pymdownx.tasklist
+  - pymdownx.arithmatex
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      fallback_to_build_date: true
+  - glightbox
+  - blog:
+      blog_dir: blog
+      post_template: blog/post.html
+  - awesome-pages
+  - minify:
+      minify_html: true
+
+extra_css:
+  - assets/stylesheets/custom.css
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra:
+  social:
+    - icon: fontawesome/brands/qq
+      link: "https://wpa.qq.com/msgrd?v=3&uin=1874223521"
+      name: QQ：1874223521
+    - icon: fontawesome/brands/weixin
+      link: "/assets/wechat_qr.png"
+      name: 微信：13385282702

@@ -1,0 +1,8 @@
+mkdocs==1.5.3
+mkdocs-material==9.5.14
+mkdocs-glightbox
+mkdocs-minify-plugin
+mkdocs-git-revision-date-localized-plugin
+mkdocs-awesome-pages-plugin
+mkdocs-blog-plugin
+pymdown-extensions
