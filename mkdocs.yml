@@ -6,85 +6,118 @@ site_description: 记录读研期间的知识与故事
 theme:
   name: material
   logo: assets/images/myface.png
-  favicon: assets/images/favicon.ico
   language: zh
+  
+  # 关键修改部分
   features:
+    - navigation.tabs  # 强化横向导航
+    - navigation.top   # 顶部导航条
     - navigation.instant
-    - navigation.sections
-    - navigation.expand
     - toc.integrate
     - content.code.copy
-    - content.code.select
-    - search.suggest
+    - content.action.edit
     - search.highlight
+    - search.share
+    - header.autohide  # 新增：滚动时自动隐藏标题
+
+  # 颜色定制（您指定的颜色）
   palette:
-    # Light and dark mode auto-switching
-    scheme: slate
-    primary: blue
-    accent: indigo
+    scheme: default
+    primary: 'teal'  # 使用接近您颜色的预设
+    accent: 'light-blue'
+    toggle:
+      icon: material/weather-sunny
+      name: 切换主题
+
+  # 高级颜色覆盖（精确匹配您的颜色）
+  custom:
+    palette:
+      primary: '#3C7699'  # 主色
+      primary-dark: '#2C5A7A'
+      primary-light: '#5A9DB8'
+      accent: '#5A9DB8'   # 辅助色
+
   font:
-    text: Inter
-    code: JetBrains Mono
+    text: 
+      family: Roboto
+      scale: 1.1  # 增大正文字号
+    code: Roboto Mono
+
   icon:
     repo: fontawesome/brands/github
 
-repo_url: https://github.com/biosunhongxun/mysite
-edit_uri: edit/main/docs/
-
+# 导航强化配置
 nav:
   - 首页: index.md
-  - 关于我: about.md
-  - 项目:
+  - 关于我: 
+      - 个人简介: about.md
+      - 联系方式: about.md#contact  # 添加锚点
+  - 科研项目:
       - 分子实验: projects/Molecular.md
       - 生信分析: projects/Analysis.md
-  - 教程笔记:
+  - 技术笔记:
       - Linux 入门: tutorials/linux-basic.md
       - MkDocs 部署: tutorials/mkdocs-setup.md
-  - 博客:
+  - 生活博客:
       - 敬过往: blog/story.md
       - 爱当下: blog/love.md
       - 向未来: blog/future.md
 
-markdown_extensions:
-  - admonition
-  - toc:
-      permalink: true
-  - pymdownx.superfences
-  - pymdownx.highlight:
-      anchor_linenums: true
-  - pymdownx.details
-  - pymdownx.tabbed
-  - pymdownx.emoji
-  - pymdownx.tasklist
-  - pymdownx.arithmatex:
-      generic: true
-
+# 插件优化
 plugins:
-  - search
+  - search:
+      lang: zh
+      separator: '[\s\-\.]+'
   - git-revision-date-localized:
-      type: date
       fallback_to_build_date: true
-  - glightbox
+      type: timeago
+  - glightbox:
+      touch_navigation: true
   - blog:
       blog_dir: blog
-      archive: true
-      categories: true
+      post_date_format: 'YYYY年MM月DD日'
+  - awesome-pages
   - minify:
       minify_html: true
-      minify_css: true
       minify_js: true
+      minify_css: true
 
+# 样式强化
 extra_css:
   - assets/stylesheets/custom.css
+  - https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap  # 中文字体
 
 extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
+# 社交链接优化
 extra:
   social:
     - icon: fontawesome/brands/qq
       link: "https://wpa.qq.com/msgrd?v=3&uin=1874223521"
-      name: QQ：1874223521
+      name: QQ咨询
     - icon: fontawesome/brands/weixin
       link: "/assets/wechat_qr.png"
-      name: 微信：13385282702
+      name: 微信交流
+    - icon: fontawesome/brands/github
+      link: "https://github.com/biosunhongxun"
+      name: GitHub
+
+# 高级配置
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: "¶"
+      baselevel: 2
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.smartsymbols
+  - attr_list
