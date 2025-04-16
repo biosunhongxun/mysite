@@ -6,28 +6,25 @@ site_description: 记录读研期间的知识与故事
 theme:
   name: material
   logo: assets/images/myface.png
+  favicon: assets/images/favicon.ico
   language: zh
   features:
     - navigation.instant
-    - navigation.tabs
-    - navigation.top
+    - navigation.sections
+    - navigation.expand
     - toc.integrate
     - content.code.copy
-    - content.action.edit
+    - content.code.select
+    - search.suggest
     - search.highlight
-    - search.share
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: custom
-      accent: teal
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: custom
-      accent: teal
+    # Light and dark mode auto-switching
+    scheme: slate
+    primary: blue
+    accent: indigo
   font:
-    text: Poppins
-    code: Roboto Mono
+    text: Inter
+    code: JetBrains Mono
   icon:
     repo: fontawesome/brands/github
 
@@ -42,7 +39,7 @@ nav:
       - 生信分析: projects/Analysis.md
   - 教程笔记:
       - Linux 入门: tutorials/linux-basic.md
-      - MkDocs 快速部署: tutorials/mkdocs-setup.md
+      - MkDocs 部署: tutorials/mkdocs-setup.md
   - 博客:
       - 敬过往: blog/story.md
       - 爱当下: blog/love.md
@@ -52,33 +49,35 @@ markdown_extensions:
   - admonition
   - toc:
       permalink: true
-  - codehilite
-  - footnotes
   - pymdownx.superfences
-  - pymdownx.highlight
+  - pymdownx.highlight:
+      anchor_linenums: true
   - pymdownx.details
   - pymdownx.tabbed
   - pymdownx.emoji
   - pymdownx.tasklist
-  - pymdownx.arithmatex
+  - pymdownx.arithmatex:
+      generic: true
 
 plugins:
   - search
   - git-revision-date-localized:
+      type: date
       fallback_to_build_date: true
   - glightbox
   - blog:
       blog_dir: blog
-      post_template: blog/post.html
-  - awesome-pages
+      archive: true
+      categories: true
   - minify:
       minify_html: true
+      minify_css: true
+      minify_js: true
 
 extra_css:
   - assets/stylesheets/custom.css
 
 extra_javascript:
-  - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 extra:
