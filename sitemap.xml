@@ -2,50 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>http://geneflow.fun/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-06-07</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/about/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-06-07</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/blog/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-06-07</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/blog/future/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-06-07</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/blog/love/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-06-07</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/blog/story/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-06-07</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/guide/config/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-06-07</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/guide/quickstart/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-06-07</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/projects/Analysis/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-06-07</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/projects/Molecular/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-06-07</lastmod>
+    </url>
+    <url>
+         <loc>http://geneflow.fun/projects/%F0%9F%93%81%20PLINK%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E7%AE%80%E4%BB%8B%EF%BC%88.bed%2C%20.bim%2C%20.fam%EF%BC%89/</loc>
+         <lastmod>2025-06-07</lastmod>
+    </url>
+    <url>
+         <loc>http://geneflow.fun/projects/%F0%9F%93%9D%20.bed%20%3A.bam%3A.fam%20%E6%80%8E%E4%B9%88%E6%9D%A5%E7%9A%84%EF%BC%9F/</loc>
+         <lastmod>2025-06-07</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/tutorials/linux-basic/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-06-07</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/tutorials/mkdocs-setup/</loc>
-         <lastmod>2025-04-16</lastmod>
+         <lastmod>2025-06-07</lastmod>
     </url>
 </urlset>
