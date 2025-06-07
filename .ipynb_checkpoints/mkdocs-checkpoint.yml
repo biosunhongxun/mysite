@@ -1,0 +1,80 @@
+site_name: GeneFlow
+site_url: http://geneflow.fun
+site_author: 孙红勋
+site_description: 记录读研期间的知识与故事
+
+theme:
+  name: material
+  logo: assets/images/myface.png
+  language: zh
+  
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - content.code.copy
+    - content.action.edit
+    - search.highlight
+    - search.share
+
+  palette:
+    scheme: default
+    primary: '#3C7699'
+    accent: '#5A9DB8'
+    toggle:
+      icon: material/weather-sunny
+      name: 切换主题
+
+  font:
+    text: 
+      family: Roboto, "Noto Sans SC"
+      scale: 1.05
+    code: Roboto Mono
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: "¶"
+      baselevel: 2
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      linenums_style: pymdownx-inline
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - attr_list
+
+plugins:
+  - search:
+      lang: zh
+  - git-revision-date-localized:
+      type: timeago
+      timezone: Asia/Shanghai
+  - glightbox
+  - awesome-pages
+  - blog:
+      blog_dir: blog
+      post_date_format: 'YYYY年MM月DD日'
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+
+extra:
+  footer:
+    text: >
+      Copyright © <span id="year">2025</span> ~ now | 
+      <strong>shx</strong> <span class="flag">🇨🇳</span>
+    icon: fontawesome/solid/heart
+
+extra_css:
+  - assets/stylesheets/custom.css
+  - https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap
+
+extra_javascript:
+  - js/extra_javascript.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
