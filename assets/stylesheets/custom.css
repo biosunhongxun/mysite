@@ -1,0 +1,121 @@
+/* ========== 全局修复 ========== */
+.md-container {
+  display: flex !important;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.md-main {
+  flex-grow: 1;
+}
+
+/* ========== 导航系统修复 ========== */
+/* 主侧边栏修复 */
+.md-sidebar--primary {
+  width: 240px !important;
+  background: var(--md-primary-bg-color) !important;
+  border-right: 1px solid rgba(60, 118, 153, 0.1);
+}
+
+/* 横向标签导航 */
+.md-tabs {
+  background: rgba(60, 118, 153, 0.05);
+  border-bottom: 1px solid rgba(60, 118, 153, 0.1);
+}
+
+.md-tabs__link {
+  color: var(--md-primary-fg-color) !important;
+  font-weight: 500;
+  padding: 0.8rem 1rem;
+}
+
+.md-tabs__link--active {
+  border-bottom: 2px solid;
+}
+
+/* ========== 颜色系统强化 ========== */
+:root {
+  --md-primary-fg-color: #3C7699;
+  --md-primary-fg-color--light: #5A9DB8;
+  --md-primary-fg-color--dark: #2C5A7A;
+  --md-accent-fg-color: #5A9DB8;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #3C7699;
+  --md-accent-fg-color: #5A9DB8;
+  --md-default-bg-color: #121212;
+}
+
+/* ========== 移动端优化 ========== */
+@media screen and (max-width: 76.1875em) {
+  .md-nav--primary .md-nav__title {
+    background: var(--md-primary-fg-color) !important;
+    color: white !important;
+  }
+  
+  .md-nav__source {
+    background: var(--md-primary-fg-color--dark) !important;
+  }
+}
+
+/* ========== 内容区优化 ========== */
+.md-typeset h1 {
+  color: var(--md-primary-fg-color);
+  border-bottom: 2px solid rgba(60, 118, 153, 0.2);
+  padding-bottom: 0.3em;
+}
+
+.md-typeset a {
+  color: var(--md-primary-fg-color);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.md-typeset a:hover {
+  color: var(--md-primary-fg-color--dark);
+  text-decoration: none;
+}
+
+/* ========== 页脚定制 ========== */
+.md-footer {
+  background-color: rgba(60, 118, 153, 0.05) !important;
+  border-top: 1px solid rgba(60, 118, 153, 0.1);
+  padding: 1rem 0;
+}
+
+.md-footer-meta {
+  background-color: transparent !important;
+}
+
+.footer-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--md-primary-fg-color);
+  font-size: 0.9rem;
+}
+
+.flag {
+  font-size: 1.2em;
+  vertical-align: middle;
+  margin-left: 0.2rem;
+}
+
+/* ========== 移动端优化 ========== */
+@media screen and (max-width: 768px) {
+  .md-footer__inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+}
+
+.md-footer-meta:after {
+  content: "Copyright © 2025 ~ now | shx wly 🇨🇳";
+  display: block;
+  text-align: center;
+  color: #3C7699;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
