@@ -53,7 +53,6 @@ plugins:
   - git-revision-date-localized:
       type: timeago
       timezone: Asia/Shanghai
-  - glightbox
   - awesome-pages
   - blog:
       blog_dir: blog
