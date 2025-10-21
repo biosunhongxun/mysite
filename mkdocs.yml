@@ -1,79 +1,96 @@
 site_name: GeneFlow
-site_url: http://geneflow.fun
+site_url: https://geneflow.fun
 site_author: 孙红勋
 site_description: 记录读研期间的知识与故事
 
 theme:
   name: material
-  logo: assets/images/myface.png
   language: zh
-  
+  logo: assets/images/myface.png
+  favicon: assets/images/myface.png
   features:
-    - navigation.tabs
+    - navigation.top  # 确保导航栏在上方
     - navigation.sections
+    - navigation.expand
+    - navigation.indexes
     - toc.integrate
     - content.code.copy
-    - content.action.edit
+    - search.suggest
     - search.highlight
-    - search.share
-
+    - content.tabs
+  icon:
+    logo: material/dna
   palette:
-    scheme: default
-    primary: '#3C7699'
-    accent: '#5A9DB8'
-    toggle:
-      icon: material/weather-sunny
-      name: 切换主题
-
+    - scheme: default
+      primary: deep purple  # 全新主题色调：深紫色
+      accent: purple
+      toggle:
+        icon: material/weather-night
+        name: 切换为夜间模式
+    - scheme: slate
+      primary: deep purple
+      accent: lime
+      toggle:
+        icon: material/weather-sunny
+        name: 切换为日间模式
   font:
-    text: 
-      family: Roboto, "Noto Sans SC"
-      scale: 1.05
-    code: Roboto Mono
+    text: 'Inter, sans-serif'  # 修复后的字体配置
 
 markdown_extensions:
   - admonition
   - toc:
-      permalink: "¶"
+      permalink: true
       baselevel: 2
-  - pymdownx.superfences
   - pymdownx.highlight:
       anchor_linenums: true
-      linenums_style: pymdownx-inline
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
-  - pymdownx.tasklist:
-      custom_checkbox: true
   - attr_list
+  - tables
+  - def_list
+  - footnotes
 
 plugins:
   - search:
       lang: zh
   - git-revision-date-localized:
-      type: timeago
+      type: date
+      fallback_to_build_date: true
       timezone: Asia/Shanghai
   - awesome-pages
   - blog:
       blog_dir: blog
       post_date_format: 'YYYY年MM月DD日'
+      draft: true  # 支持草稿
   - minify:
       minify_html: true
       minify_js: true
       minify_css: true
 
 extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/biosunhongxun
+      name: GitHub
+    - icon: fontawesome/solid/envelope
+      link: mailto:example@email.com
+      name: 联系我
   footer:
-    text: >
-      Copyright © <span id="year">2025</span> ~ now | 
-      <strong>shx</strong> <span class="flag">🇨🇳</span>
-    icon: fontawesome/solid/heart
+    text: |
+      &copy; 2025–2026 孙红勋 | 
+      <strong>GeneFlow</strong> | 
+      Powered by [MkDocs](https://www.mkdocs.org/) & 
+      [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)
 
 extra_css:
   - assets/stylesheets/custom.css
-  - https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap
+  - https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap
 
 extra_javascript:
-  - js/extra_javascript.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
