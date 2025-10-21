@@ -2,58 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>http://geneflow.fun/</loc>
-         <lastmod>2025-06-07</lastmod>
+         <lastmod>2025-10-21</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/about/</loc>
-         <lastmod>2025-06-07</lastmod>
+         <lastmod>2025-10-21</lastmod>
+    </url>
+    <url>
+         <loc>http://geneflow.fun/Bioinformation/PLINK%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E7%AE%80%E4%BB%8B/</loc>
+         <lastmod>2025-10-21</lastmod>
+    </url>
+    <url>
+         <loc>http://geneflow.fun/Bioinformation/bed%20%3A.bam%3A.fam%20%E6%80%8E%E4%B9%88%E6%9D%A5%E7%9A%84/</loc>
+         <lastmod>2025-10-21</lastmod>
+    </url>
+    <url>
+         <loc>http://geneflow.fun/Bioinformation/markdown%E8%AF%AD%E6%B3%95%E8%A1%A8%E9%80%9F%E6%9F%A5/</loc>
+         <lastmod>2025-10-21</lastmod>
+    </url>
+    <url>
+         <loc>http://geneflow.fun/Bioinformation/%E5%88%86%E5%AD%90%E5%8A%A8%E5%8A%9B%E5%AD%A6%E6%A8%A1%E6%8B%9F%E6%B5%81%E7%A8%8B/</loc>
+         <lastmod>2025-10-21</lastmod>
+    </url>
+    <url>
+         <loc>http://geneflow.fun/Bioinformation/%E8%B6%85%E7%AE%97gromac%E6%B5%81%E7%A8%8B/</loc>
+         <lastmod>2025-10-21</lastmod>
+    </url>
+    <url>
+         <loc>http://geneflow.fun/Bioinformation/%E8%BD%A8%E8%BF%B9%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90/</loc>
+         <lastmod>2025-10-21</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/blog/</loc>
-         <lastmod>2025-06-07</lastmod>
+         <lastmod>2025-10-21</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/blog/future/</loc>
-         <lastmod>2025-06-07</lastmod>
+         <lastmod>2025-10-21</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/blog/love/</loc>
-         <lastmod>2025-06-07</lastmod>
+         <lastmod>2025-10-21</lastmod>
     </url>
     <url>
          <loc>http://geneflow.fun/blog/story/</loc>
-         <lastmod>2025-06-07</lastmod>
+         <lastmod>2025-10-21</lastmod>
     </url>
     <url>
-         <loc>http://geneflow.fun/guide/config/</loc>
-         <lastmod>2025-06-07</lastmod>
+         <loc>http://geneflow.fun/projects/%E5%85%8D%E7%96%AB%E8%8D%A7%E5%85%89/</loc>
+         <lastmod>2025-10-21</lastmod>
     </url>
     <url>
-         <loc>http://geneflow.fun/guide/quickstart/</loc>
-         <lastmod>2025-06-07</lastmod>
+         <loc>http://geneflow.fun/projects/%E7%BB%84%E7%BB%87DNA%E6%8F%90%E5%8F%96/</loc>
+         <lastmod>2025-10-21</lastmod>
     </url>
     <url>
-         <loc>http://geneflow.fun/projects/Analysis/</loc>
-         <lastmod>2025-06-07</lastmod>
+         <loc>http://geneflow.fun/projects/%E7%BB%84%E7%BB%87RNA%E6%8F%90%E5%8F%96/</loc>
+         <lastmod>2025-10-21</lastmod>
     </url>
     <url>
-         <loc>http://geneflow.fun/projects/Molecular/</loc>
-         <lastmod>2025-06-07</lastmod>
-    </url>
-    <url>
-         <loc>http://geneflow.fun/projects/%F0%9F%93%81%20PLINK%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E7%AE%80%E4%BB%8B%EF%BC%88.bed%2C%20.bim%2C%20.fam%EF%BC%89/</loc>
-         <lastmod>2025-06-07</lastmod>
-    </url>
-    <url>
-         <loc>http://geneflow.fun/projects/%F0%9F%93%9D%20.bed%20%3A.bam%3A.fam%20%E6%80%8E%E4%B9%88%E6%9D%A5%E7%9A%84%EF%BC%9F/</loc>
-         <lastmod>2025-06-07</lastmod>
-    </url>
-    <url>
-         <loc>http://geneflow.fun/tutorials/linux-basic/</loc>
-         <lastmod>2025-06-07</lastmod>
-    </url>
-    <url>
-         <loc>http://geneflow.fun/tutorials/mkdocs-setup/</loc>
-         <lastmod>2025-06-07</lastmod>
+         <loc>http://geneflow.fun/projects/%E7%BB%84%E7%BB%87%E8%9B%8B%E7%99%BD%E6%8F%90%E5%8F%96/</loc>
+         <lastmod>2025-10-21</lastmod>
     </url>
 </urlset>
