@@ -525,21 +525,19 @@ body{
       </div>
       <div class="sidebar-cat-items open" id="{{ cat_id }}">
 
-        {% for file_slug in cat.files %}
-        {% set file_display = file_slug.split('-',1)[1] if '-' in file_slug else file_slug %}
-        <a href="/{{ cat.name }}/{{ file_slug }}" class="sidebar-item{% if current_path.startswith(cat.name ~ '/' ~ file_slug) %} active{% endif %}">
-          {{ file_display }}
+        {% for file in cat.files %}
+        <a href="/{{ cat.name }}/{{ file.slug }}" class="sidebar-item{% if current_path.startswith(cat.name ~ '/' ~ file.slug) %} active{% endif %}">
+          {{ file.display }}
         </a>
         {% endfor %}
 
         {% if cat.children %}
           {% for child in cat.children %}
           <div class="sidebar-subdir-label">{{ child.name }}</div>
-          {% for file_slug in child.files %}
-          {% set file_display = file_slug.split('-',1)[1] if '-' in file_slug else file_slug %}
-          <a href="/{{ cat.name }}/{{ child.name }}/{{ file_slug }}"
-             class="sidebar-item sidebar-subdir-item{% if current_path.startswith(cat.name ~ '/' ~ child.name ~ '/' ~ file_slug) %} active{% endif %}">
-            {{ file_display }}
+          {% for file in child.files %}
+          <a href="/{{ cat.name }}/{{ child.name }}/{{ file.slug }}"
+             class="sidebar-item sidebar-subdir-item{% if current_path.startswith(cat.name ~ '/' ~ child.name ~ '/' ~ file.slug) %} active{% endif %}">
+            {{ file.display }}
           </a>
           {% endfor %}
           {% endfor %}
@@ -807,7 +805,10 @@ function showContent(title,html,comments,sectionIdx,path){
       tag.innerHTML=`<span class="section-dot"></span> ${emoji} ${name}`;
     }
   }
-  if(prose)prose.innerHTML=html;
+  if(prose){
+    if(!html.trimStart().startsWith('<h1'))html='<h1>'+title+'</h1>\n'+html;
+    prose.innerHTML=html;
+  }
 
   // Comments
   if(commentsList){

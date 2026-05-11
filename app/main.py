@@ -47,6 +47,14 @@ init_db()
 
 # ── 目录树（支持嵌套子目录）──
 
+def slug_display(slug: str) -> str:
+    """将文件 slug 转为显示名"""
+    # 去掉数字前缀（01-xx → xx）
+    if len(slug) > 2 and slug[:2].isdigit() and slug[2:3] in ('', '-'):
+        return slug[3:] if slug[2:3] == '-' else slug
+    return slug
+
+
 def get_directory_tree(base_dir):
     """递归构建导航树，支持多级子目录"""
     tree = []
@@ -56,24 +64,25 @@ def get_directory_tree(base_dir):
             continue
 
         # 本级 .md 文件
-        files = sorted([
+        raw_files = sorted([
             f.name.replace('.md', '')
             for f in item_path.glob("*.md")
         ])
+        files = [{"slug": f, "display": slug_display(f)} for f in raw_files]
 
         # 子目录（嵌套层级）
         children = []
         for sub in sorted(os.listdir(item_path)):
             sub_path = item_path / sub
             if sub_path.is_dir():
-                nested = sorted([
+                raw_nested = sorted([
                     f.name.replace('.md', '')
                     for f in sub_path.glob("*.md")
                 ])
-                if nested:
+                if raw_nested:
                     children.append({
                         "name": sub,
-                        "files": nested
+                        "files": [{"slug": f, "display": slug_display(f)} for f in raw_nested]
                     })
 
         entry = {"name": item, "files": files}
@@ -104,9 +113,6 @@ async def api_content(path: str):
     md_text = target_file.read_text(encoding="utf-8")
     title = extract_title(md_text, target_md)
     html = render_markdown(md_text)
-    # 如果 markdown 没有 h1，自动补一个渐变标题
-    if not html.lstrip().startswith("<h1"):
-        html = f"<h1>{title}</h1>\n" + html
 
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -120,7 +126,6 @@ async def api_content(path: str):
     ]
     conn.close()
 
-    # 提取板块索引（01-xx → 0, 02-xx → 1, ...）
     section_index = -1
     dirs = sorted(d for d in KNOWLEDGE_BASE_DIR.iterdir() if d.is_dir())
     for i, child in enumerate(dirs):
