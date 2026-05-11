@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ page_title }} — 鸿勋</title>
+<title>{% if page_title != '鸿勋' %}{{ page_title }} — {% endif %}鸿勋</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+
 <style>
 /* =============================================
    DESIGN TOKENS
@@ -14,52 +15,53 @@
   --bg: #f8f5f0;
   --bg-card: #ffffff;
   --bg-card-hover: #faf8f5;
-  --bg-nav: #ffffff;
   --bg-code-inline: #f0ece6;
   --bg-code-block: #1c1b1a;
   --bg-overlay: rgba(23, 22, 20, 0.5);
   --text: #2c2824;
   --text-secondary: #7a746e;
   --text-muted: #ada7a0;
-  --text-nav: #5c5650;
   --text-on-accent: #ffffff;
   --border: #e8e2da;
   --border-light: #f0ece6;
   --accent: #d97706;
   --accent-hover: #b85e00;
-  --accent-secondary: #dc2626;
   --accent-soft: rgba(217, 119, 6, 0.08);
   --accent-glow: rgba(217, 119, 6, 0.15);
   --gradient: linear-gradient(135deg, #d97706, #dc2626);
   --shadow-sm: 0 1px 2px rgba(44, 40, 36, 0.04);
   --shadow-md: 0 4px 16px rgba(44, 40, 36, 0.06);
   --shadow-lg: 0 8px 40px rgba(44, 40, 36, 0.08);
-  --shadow-xl: 0 20px 60px rgba(44, 40, 36, 0.1);
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
-  --topbar-h: 56px;
-  --nav-w: 280px;
+  --nav-h: 64px;
   --content-w: 800px;
   --font-sans: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', 'Georgia', serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --noise-opacity: 0.025;
+
+  /* 板块配色 */
+  --c-s0: 254, 141, 159;    /* 关于我 - 温暖粉红 */
+  --c-s1: 247, 226, 231;    /* 研究 - 浅粉 */
+  --c-s2: 255, 225, 225;    /* 实验手册 - 极浅粉 */
+  --c-s3: 227, 244, 255;    /* 抽屉 - 极浅蓝 */
+  --c-s4: 188, 227, 245;    /* 随笔 - 浅蓝 */
+  --c-nav: 113, 187, 234;   /* 导航栏底色 */
+  --section-color: var(--c-s0);
 }
 
 [data-theme="dark"] {
   --bg: #171614;
   --bg-card: #242220;
   --bg-card-hover: #2a2825;
-  --bg-nav: #1e1c1a;
   --bg-code-inline: #2e2b28;
   --bg-code-block: #0f0e0d;
   --bg-overlay: rgba(0, 0, 0, 0.6);
   --text: #e6e2dd;
   --text-secondary: #a6a09a;
   --text-muted: #6e6862;
-  --text-nav: #a6a09a;
   --border: #33302c;
   --border-light: #2a2825;
   --accent: #f59e0b;
@@ -70,8 +72,12 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.4);
-  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.5);
-  --noise-opacity: 0.04;
+  --c-s0: 220, 120, 140;
+  --c-s1: 200, 170, 180;
+  --c-s2: 200, 160, 160;
+  --c-s3: 160, 200, 220;
+  --c-s4: 140, 180, 200;
+  --c-nav: 90, 150, 200;
 }
 
 /* =============================================
@@ -86,7 +92,6 @@ body {
   line-height: 1.75;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   transition: background 0.45s ease, color 0.45s ease;
 }
@@ -94,51 +99,6 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-
-/* =============================================
-   NOISE TEXTURE OVERLAY
-   ============================================= */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-  opacity: var(--noise-opacity);
-  pointer-events: none;
-  z-index: 10000;
-}
-
-/* =============================================
-   CUSTOM CURSOR (desktop only)
-   ============================================= */
-@media (pointer: fine) {
-  body { cursor: none; }
-  a, button, input, textarea, select { cursor: none; }
-  .cursor-dot, .cursor-ring { position: fixed; pointer-events: none; z-index: 99999; }
-  .cursor-dot {
-    width: 8px; height: 8px;
-    background: var(--accent);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s, height 0.2s, background 0.2s;
-  }
-  .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1.5px solid var(--accent);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.35s var(--ease-out-expo), height 0.35s var(--ease-out-expo),
-                border-color 0.35s ease, background 0.35s ease;
-  }
-  .cursor-ring.hover {
-    width: 52px; height: 52px;
-    border-color: transparent;
-    background: var(--accent-soft);
-  }
-  .cursor-ring.hide { opacity: 0; }
-}
 
 /* =============================================
    READING PROGRESS
@@ -146,265 +106,306 @@ body::after {
 .progress-bar {
   position: fixed; top: 0; left: 0; height: 2px;
   background: var(--gradient);
-  z-index: 9998; width: 0%;
+  z-index: 9999; width: 0%;
   transition: width 0.05s linear;
 }
 
 /* =============================================
-   TOP BAR
+   STARS
    ============================================= */
-.topbar {
-  position: fixed; top: 0; left: 0; right: 0;
-  height: var(--topbar-h);
+.stars { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation: starTwinkle var(--dur) ease-in-out var(--delay) infinite;
+}
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.5); }
+}
+
+/* =============================================
+   HERO / LANDING
+   ============================================= */
+.hero {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity 0.4s ease, transform 0.4s var(--ease-out-expo);
+  z-index: 1;
+}
+.hero.hidden {
+  opacity: 0; transform: scale(0.92);
+  pointer-events: none;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  /* 默认渐变背景 — 修改这里可换成图片 background: url('/static/landscape.jpg') center/cover */
+  background: linear-gradient(180deg,
+    rgb(180,140,130) 0%,
+    rgb(255,217,210) 30%,
+    rgb(233,236,210) 55%,
+    rgb(210,255,251) 80%,
+    #b8d4d0 100%);
+  z-index: -1;
+}
+[data-theme="dark"] .hero-bg {
+  background: linear-gradient(180deg,
+    rgb(40,25,20) 0%,
+    rgb(60,35,25) 30%,
+    rgb(50,45,40) 55%,
+    rgb(30,50,55) 80%,
+    rgb(25,45,50) 100%);
+}
+.hero-silhouette {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 25%;
+  background: linear-gradient(180deg, transparent 0%, rgba(160,190,185,0.20) 50%, rgba(140,175,170,0.35) 100%);
+  border-radius: 55% 40% 0 0 / 30% 25% 0 0;
+  z-index: -1;
+}
+[data-theme="dark"] .hero-silhouette {
+  background: linear-gradient(180deg, transparent 0%, rgba(20,40,45,0.3) 50%, rgba(15,35,40,0.5) 100%);
+}
+
+.hero-brand {
+  text-align: center;
+  animation: heroFadeUp 0.8s ease 0.3s both;
+}
+.hero-brand h1 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 400;
+  font-style: italic;
+  color: rgb(80, 50, 40);
+  letter-spacing: 0.14em;
+  text-shadow: 0 2px 20px rgba(255,255,255,0.3);
+}
+[data-theme="dark"] .hero-brand h1 { color: rgb(220, 200, 180); }
+.hero-divider {
+  width: 32px; height: 1px;
+  background: rgba(80, 50, 40, 0.15);
+  margin: 6px auto 0;
+  animation: heroFadeUp 0.8s ease 0.5s both;
+}
+[data-theme="dark"] .hero-divider { background: rgba(220, 200, 180, 0.2); }
+.hero-tagline {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: rgb(120, 90, 75);
+  letter-spacing: 0.18em;
+  font-weight: 400;
+  animation: heroFadeUp 0.8s ease 0.6s both;
+}
+[data-theme="dark"] .hero-tagline { color: rgb(180, 160, 140); }
+
+.hero-scroll {
+  position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
+  text-align: center;
+  animation: heroFadeUp 0.8s ease 1s both;
+}
+.hero-scroll-mouse {
+  width: 20px; height: 30px;
+  border: 1.5px solid rgba(80, 50, 40, 0.2);
+  border-radius: 10px; margin: 0 auto; position: relative;
+}
+[data-theme="dark"] .hero-scroll-mouse { border-color: rgba(220, 200, 180, 0.2); }
+.hero-scroll-dot {
+  width: 2.5px; height: 5px;
+  background: rgba(80, 50, 40, 0.3);
+  border-radius: 2px;
+  position: absolute; top: 5px; left: 50%;
+  transform: translateX(-50%);
+  animation: scrollDot 1.5s ease infinite;
+}
+[data-theme="dark"] .hero-scroll-dot { background: rgba(220, 200, 180, 0.3); }
+
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scrollDot {
+  0%, 100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 0.2; transform: translateX(-50%) translateY(10px); }
+}
+
+/* =============================================
+   GLASS NAVBAR
+   ============================================= */
+.nav-wrap {
+  position: fixed; top: 16px; left: 16px; right: 16px;
+  z-index: 100;
+  display: flex; justify-content: center;
+  pointer-events: none;
+}
+.navbar {
   display: flex; align-items: center;
   justify-content: space-between;
-  padding: 0 1.5rem;
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
-  backdrop-filter: blur(16px) saturate(1.2);
-  -webkit-backdrop-filter: blur(16px) saturate(1.2);
-  border-bottom: 1px solid var(--border-light);
-  z-index: 100;
+  padding: 8px 18px;
+  width: 100%; max-width: 780px;
+  background: rgba(var(--c-nav), 0.12);
+  backdrop-filter: blur(24px) saturate(1.3);
+  -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+  pointer-events: auto;
   transition: background 0.45s ease, border-color 0.45s ease;
 }
-.topbar-left { display: flex; align-items: center; gap: 0.75rem; }
-.topbar-right { display: flex; align-items: center; gap: 0.5rem; }
-.site-name {
-  font-size: 1rem; font-weight: 700; letter-spacing: -0.01em;
-  background: var(--gradient);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
+[data-theme="dark"] .navbar {
+  background: rgba(30, 30, 30, 0.6);
+  border-color: rgba(255, 255, 255, 0.06);
 }
-.site-tagline {
-  display: none;
-  font-size: 0.75rem; color: var(--text-muted);
-  font-weight: 400;
+.nav-logo {
+  font-size: 1.1rem;
+  text-decoration: none;
+  line-height: 1;
 }
-@media (min-width: 640px) {
-  .site-tagline { display: inline; }
-}
-
-/* ── Top bar buttons ── */
-.top-btn {
-  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
-  border: none; border-radius: 50%;
-  background: transparent; color: var(--text-secondary);
-  font-size: 1.15rem;
+.nav-links { display: flex; gap: 3px; }
+.nav-link {
+  padding: 5px 14px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  color: rgba(80, 70, 65, 0.65);
+  text-decoration: none;
+  font-weight: 500;
   transition: all 0.25s ease;
   position: relative;
+  white-space: nowrap;
 }
-.top-btn:hover {
-  background: var(--accent-soft);
-  color: var(--accent);
+[data-theme="dark"] .nav-link { color: rgba(200, 190, 180, 0.6); }
+.nav-link:hover {
+  color: rgb(80, 70, 65);
+  background: rgba(255, 255, 255, 0.15);
+}
+[data-theme="dark"] .nav-link:hover { color: rgb(220, 210, 200); }
+.nav-link.active {
+  color: rgb(var(--section-color));
+  background: rgba(var(--section-color), 0.15);
+  font-weight: 600;
+}
+[data-theme="dark"] .nav-link.active {
+  background: rgba(var(--section-color), 0.12);
+}
+.nav-right { display: flex; align-items: center; gap: 4px; }
+.nav-theme-btn {
+  width: 32px; height: 32px; display: flex;
+  align-items: center; justify-content: center;
+  border: none; border-radius: 8px;
+  background: transparent; color: rgba(80, 70, 65, 0.5);
+  font-size: 0.9rem; cursor: pointer;
+  transition: all 0.25s ease;
+}
+[data-theme="dark"] .nav-theme-btn { color: rgba(200, 190, 180, 0.5); }
+.nav-theme-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
   transform: scale(1.1);
 }
-.top-btn:active { transform: scale(0.92); }
-
-/* ── Hamburger ── */
-.hamburger {
-  width: 36px; height: 36px; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 5px;
-  background: none; border: none; cursor: pointer;
-  padding: 0; position: relative;
-}
-.hamburger span {
-  display: block; width: 20px; height: 2px;
-  background: var(--text-secondary);
-  border-radius: 2px;
-  transition: all 0.35s var(--ease-out-expo);
-  transform-origin: center;
-}
-.hamburger.active span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-.hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.hamburger.active span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-.hamburger:hover span { background: var(--accent); }
 
 /* =============================================
-   SITE NAVIGATION OVERLAY
+   CONTENT SECTION
    ============================================= */
-.nav-overlay {
-  position: fixed; inset: 0;
-  background: var(--bg-overlay);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 90;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.4s ease;
-}
-.nav-overlay.active { opacity: 1; pointer-events: auto; }
-
-/* =============================================
-   NAV DRAWER
-   ============================================= */
-.nav-drawer {
-  position: fixed; top: 0; left: 0;
-  width: var(--nav-w); max-width: 85vw;
-  height: 100vh;
-  background: var(--bg-nav);
-  border-right: 1px solid var(--border);
-  z-index: 95;
-  transform: translateX(-100%);
-  transition: transform 0.5s var(--ease-out-expo);
-  overflow-y: auto;
-  display: flex; flex-direction: column;
-}
-.nav-drawer.open { transform: translateX(0); }
-
-.nav-header {
-  padding: 1.5rem 1.5rem 1rem;
-  border-bottom: 1px solid var(--border-light);
-  flex-shrink: 0;
-}
-.nav-header h2 {
-  font-size: 1.1rem; font-weight: 700;
-  background: var(--gradient);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.nav-header p {
-  font-size: 0.72rem; color: var(--text-muted);
-  margin-top: 0.1rem;
-}
-.nav-body { padding: 0.5rem 0; flex: 1; overflow-y: auto; }
-
-/* ── Category ── */
-.nav-cat { margin-bottom: 0; }
-.nav-cat-header {
-  display: flex; align-items: center; gap: 0.5rem;
-  padding: 0.55rem 1.5rem;
-  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.03em;
-  color: var(--text-muted);
-  cursor: pointer; user-select: none;
-  transition: color 0.2s;
-  border-left: 2px solid transparent;
-}
-.nav-cat-header:hover { color: var(--text-secondary); }
-.nav-cat-header .arrow {
-  margin-left: auto; font-size: 0.55rem;
-  transition: transform 0.35s ease;
-  color: var(--text-muted);
-}
-.nav-cat-header .arrow.open { transform: rotate(90deg); }
-.nav-cat-header .cat-emoji { font-size: 0.9rem; }
-
-.nav-items { overflow: hidden; max-height: 0; transition: max-height 0.4s ease; }
-.nav-items.open { max-height: 1000px; }
-
-/* ── Nav item ── */
-.nav-item {
-  display: block;
-  padding: 0.4rem 1.5rem 0.4rem 2.8rem;
-  font-size: 0.85rem; color: var(--text-nav);
-  text-decoration: none;
-  border-left: 2px solid transparent;
-  transition: all 0.2s ease;
-  position: relative;
-}
-.nav-item::before {
-  content: '';
-  position: absolute; left: 0; top: 0; bottom: 0;
-  width: 2px;
-  background: var(--gradient);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-.nav-item:hover {
-  color: var(--text);
-  background: var(--accent-soft);
-}
-.nav-item:hover::before { opacity: 0.3; }
-.nav-item.active {
-  color: var(--accent);
-  background: var(--accent-soft);
-}
-.nav-item.active::before { opacity: 1; }
-
-/* ── Subdir label ── */
-.nav-subdir-label {
-  padding: 0.35rem 1.5rem 0.2rem 2.2rem;
-  font-size: 0.72rem; font-weight: 500;
-  color: var(--text-muted);
-  letter-spacing: 0.02em;
-}
-.nav-subdir-item {
-  padding-left: 3.6rem;
-}
-
-/* =============================================
-   MAIN CONTENT
-   ============================================= */
-.main-wrap {
-  padding-top: var(--topbar-h);
-  min-height: 100vh;
-  transition: background 0.45s ease;
-}
-
 .content-section {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  padding: calc(var(--nav-h) + 16px) 16px 0;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.4s ease, transform 0.4s var(--ease-out-expo);
+  pointer-events: none;
+}
+.content-section.visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.content-inner {
   max-width: var(--content-w);
   margin: 0 auto;
-  padding: 2rem 1.5rem 1rem;
+  padding-bottom: 2rem;
+}
+
+/* ── Glass Card ── */
+.glass-card {
+  border-radius: 18px;
+  padding: 32px 36px;
+  background: rgba(var(--section-color), 0.10);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(var(--section-color), 0.18);
+  box-shadow: 0 4px 24px rgba(var(--section-color), 0.06);
+  transition: background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+}
+[data-theme="dark"] .glass-card {
+  background: rgba(var(--section-color), 0.06);
+  border-color: rgba(var(--section-color), 0.10);
+}
+@media (max-width: 640px) {
+  .glass-card { padding: 20px 18px; border-radius: 14px; }
+}
+
+/* ── Glass Card: Comments ── */
+.glass-card-comments {
+  margin-top: 16px;
+  border-radius: 18px;
+  padding: 24px 28px;
+  background: rgba(var(--c-nav), 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(var(--c-nav), 0.12);
+  transition: background 0.45s ease, border-color 0.45s ease;
+}
+[data-theme="dark"] .glass-card-comments {
+  background: rgba(var(--c-nav), 0.04);
+  border-color: rgba(var(--c-nav), 0.08);
+}
+@media (max-width: 640px) {
+  .glass-card-comments { padding: 18px 16px; }
 }
 
 /* ── Page header ── */
-.page-header {
-  margin-bottom: 1.5rem;
-  animation: fadeUp 0.6s ease both;
+.page-header { margin-bottom: 24px; }
+.page-header .section-tag {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.7rem;
+  color: rgb(var(--section-color));
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.page-header .section-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgb(var(--section-color));
 }
 .page-header h1 {
-  font-size: 1.65rem; font-weight: 700;
-  letter-spacing: -0.015em;
-  line-height: 1.3;
+  font-size: 1.5rem; font-weight: 700;
   color: var(--text);
+  margin-top: 6px;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
 }
 .page-header .divider {
-  width: 48px; height: 3px;
+  width: 36px; height: 3px;
   background: var(--gradient);
   border-radius: 2px;
-  margin-top: 0.75rem;
-}
-
-/* ── Article card ── */
-.article-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: 2.5rem 3rem;
-  box-shadow: var(--shadow-md);
-  animation: fadeUp 0.6s ease 0.1s both;
-  transition: background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
-}
-@media (max-width: 640px) {
-  .article-card { padding: 1.5rem 1.2rem; border-radius: var(--radius-md); }
+  margin-top: 12px;
 }
 
 /* =============================================
-   PROSE
+   PROSE (article content)
    ============================================= */
 .prose { font-size: 1rem; line-height: 1.85; color: var(--text); }
-
-.prose h1 {
-  font-size: 2rem; font-weight: 700;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
-  background: var(--gradient);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
 .prose h2 {
   font-size: 1.3rem; font-weight: 600;
-  margin-top: 2.2rem; margin-bottom: 0.75rem;
+  margin-top: 2rem; margin-bottom: 0.75rem;
   padding-bottom: 0.35rem;
   border-bottom: 1px solid var(--border-light);
   line-height: 1.4;
-  transition: border-color 0.45s ease;
 }
 .prose h3 {
   font-size: 1.1rem; font-weight: 600;
-  margin-top: 1.8rem; margin-bottom: 0.5rem;
+  margin-top: 1.6rem; margin-bottom: 0.5rem;
   line-height: 1.4;
 }
 .prose p { margin-bottom: 1rem; }
@@ -412,7 +413,7 @@ body::after {
   color: var(--accent);
   text-decoration: none;
   border-bottom: 1px solid transparent;
-  transition: border-color 0.25s ease, color 0.25s ease;
+  transition: border-color 0.25s ease;
 }
 .prose a:hover { border-bottom-color: var(--accent); }
 .prose strong { font-weight: 600; }
@@ -421,12 +422,11 @@ body::after {
 .prose li::marker { color: var(--accent); }
 .prose code {
   background: var(--bg-code-inline);
-  color: var(--accent-secondary);
+  color: #dc2626;
   padding: 0.15rem 0.45rem;
   border-radius: 4px;
   font-size: 0.88em;
   font-family: var(--font-mono);
-  transition: background 0.45s ease;
 }
 [data-theme="dark"] .prose code { color: #fbbf24; }
 .prose pre {
@@ -439,11 +439,9 @@ body::after {
   border: 1px solid var(--border);
   font-size: 0.82rem;
   line-height: 1.6;
-  transition: border-color 0.45s ease;
 }
 .prose pre code {
-  background: none; padding: 0; color: inherit;
-  font-size: inherit;
+  background: none; padding: 0; color: inherit; font-size: inherit;
 }
 .prose blockquote {
   border-left: 3px solid var(--accent);
@@ -459,7 +457,6 @@ body::after {
 }
 .prose th {
   background: var(--bg-code-inline);
-  color: var(--text);
   border: 1px solid var(--border);
   padding: 0.6rem 0.8rem;
   font-weight: 600; text-align: left;
@@ -477,119 +474,63 @@ body::after {
 }
 
 /* =============================================
-   ARTICLE LIST (homepage grid)
-   ============================================= */
-.section-title {
-  font-size: 1.2rem; font-weight: 700;
-  margin-bottom: 0.75rem; margin-top: 1.5rem;
-  display: flex; align-items: center; gap: 0.5rem;
-}
-.article-grid { display: flex; flex-direction: column; gap: 0.35rem; }
-.article-row {
-  display: flex; align-items: center; gap: 0.75rem;
-  padding: 0.6rem 1rem;
-  background: var(--bg-card-hover);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-  transition: all 0.25s ease;
-  text-decoration: none;
-}
-.article-row:hover {
-  border-color: var(--accent);
-  transform: translateX(4px);
-  box-shadow: var(--shadow-sm);
-}
-.article-row .num {
-  font-size: 0.7rem; color: var(--text-muted);
-  min-width: 1.5rem; font-weight: 500;
-}
-.article-row .title {
-  color: var(--text); font-size: 0.9rem; font-weight: 500;
-  transition: color 0.2s;
-}
-.article-row:hover .title { color: var(--accent); }
-
-/* =============================================
    COMMENTS
    ============================================= */
-.comment-section {
-  max-width: var(--content-w);
-  margin: 0 auto;
-  padding: 0 1.5rem 3rem;
-  animation: fadeUp 0.6s ease 0.2s both;
-}
-.comment-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: 2rem 2.5rem;
-  box-shadow: var(--shadow-sm);
-  transition: background 0.45s ease, border-color 0.45s ease;
-}
-@media (max-width: 640px) {
-  .comment-card { padding: 1.2rem 1.2rem; border-radius: var(--radius-md); }
-}
-.comment-card h3 {
-  font-size: 1rem; font-weight: 600;
-  margin-bottom: 1.2rem;
-  display: flex; align-items: center; gap: 0.5rem;
-}
-.comment-input {
-  width: 100%; padding: 0.65rem 1rem;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+.comment-section { margin-top: 12px; }
+.comment-section h3 {
+  font-size: 0.9rem; font-weight: 600;
+  margin-bottom: 14px;
   color: var(--text);
-  font-size: 0.9rem; font-family: var(--font-sans);
-  outline: none;
-  transition: border-color 0.25s ease, background 0.45s ease;
 }
-.comment-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.comment-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.comment-row { display: flex; gap: 10px; }
+.comment-row input { flex: 1; }
+.comment-input {
+  width: 100%; padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(var(--c-nav), 0.15);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 0.85rem; font-family: var(--font-sans);
+  outline: none;
+  transition: border-color 0.25s ease, background 0.3s ease;
+}
+[data-theme="dark"] .comment-input { background: rgba(255, 255, 255, 0.05); }
+.comment-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
 .comment-input::placeholder { color: var(--text-muted); }
-.comment-form { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.5rem; }
-.comment-form .row { display: flex; gap: 0.75rem; }
-.comment-form .row input { flex: 1; }
-
-/* ── Button ── */
-.btn-primary {
-  position: relative; overflow: hidden;
-  padding: 0.55rem 1.5rem;
-  border: none; border-radius: var(--radius-sm);
+.btn-send {
+  padding: 8px 22px;
+  border: none; border-radius: 10px;
   background: var(--gradient);
-  color: var(--text-on-accent);
-  font-size: 0.88rem; font-weight: 500;
+  color: #fff;
+  font-size: 0.82rem; font-weight: 500;
   font-family: var(--font-sans);
   cursor: pointer;
-  transition: all 0.3s ease;
   align-self: flex-end;
+  transition: all 0.3s ease;
 }
-.btn-primary:hover {
+.btn-send:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px var(--accent-glow);
+  box-shadow: 0 4px 16px var(--accent-glow);
 }
-.btn-primary:active { transform: scale(0.97); }
-.btn-primary .ripple {
-  position: absolute; border-radius: 50%;
-  background: rgba(255,255,255,0.35);
-  transform: scale(0);
-  animation: rippleAnim 0.6s ease-out;
-  pointer-events: none;
-}
+.btn-send:active { transform: scale(0.97); }
 
-/* ── Comment items ── */
 .comment-item {
-  padding: 0.9rem 1.1rem;
-  background: var(--bg);
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.3);
   border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-  margin-bottom: 0.6rem;
-  transition: background 0.45s ease, border-color 0.45s ease;
+  border-radius: 12px;
+  margin-bottom: 8px;
 }
+[data-theme="dark"] .comment-item { background: rgba(255, 255, 255, 0.03); }
 .comment-item .header {
   display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 0.3rem;
+  margin-bottom: 4px;
 }
-.comment-item .user-info { display: flex; align-items: center; gap: 0.5rem; }
+.comment-item .user-info { display: flex; align-items: center; gap: 8px; }
 .comment-item .avatar {
   width: 26px; height: 26px; border-radius: 50%;
   background: var(--gradient);
@@ -597,22 +538,18 @@ body::after {
   font-size: 0.7rem; font-weight: 600; color: white;
   flex-shrink: 0;
 }
-.comment-item .name { font-weight: 600; color: var(--accent); font-size: 0.85rem; }
-.comment-item .time { font-size: 0.75rem; color: var(--text-muted); }
-.comment-item .text { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
-.empty-comments {
-  text-align: center; color: var(--text-muted);
-  font-size: 0.85rem; padding: 1.5rem 0;
-}
+.comment-item .name { font-weight: 600; color: var(--accent); font-size: 0.82rem; }
+.comment-item .time { font-size: 0.72rem; color: var(--text-muted); }
+.comment-item .text { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6; }
+.empty-comments { text-align: center; color: var(--text-muted); font-size: 0.82rem; padding: 20px 0; }
 
 /* =============================================
    FOOTER
    ============================================= */
 .footer {
-  text-align: center; color: var(--text-muted); font-size: 0.75rem;
-  padding: 1.5rem; letter-spacing: 0.02em;
-  border-top: 1px solid var(--border-light);
-  transition: border-color 0.45s ease, color 0.45s ease;
+  text-align: center; color: var(--text-muted); font-size: 0.72rem;
+  padding: 24px 16px 20px;
+  letter-spacing: 0.02em;
 }
 
 /* =============================================
@@ -621,15 +558,16 @@ body::after {
 .back-top {
   position: fixed; bottom: 1.5rem; right: 1.5rem;
   z-index: 50;
-  width: 40px; height: 40px;
+  width: 38px; height: 38px;
   border-radius: 50%;
   border: 1px solid var(--border);
-  background: var(--bg-card);
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(12px);
   color: var(--text-secondary);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-  box-shadow: var(--shadow-md);
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-sm);
   opacity: 0; pointer-events: none;
   transform: translateY(12px);
   transition: all 0.35s var(--ease-out-expo);
@@ -639,15 +577,12 @@ body::after {
   transform: translateY(-3px);
   color: var(--accent);
   border-color: var(--accent);
-  box-shadow: 0 4px 16px var(--accent-glow);
 }
 
 /* =============================================
    404
    ============================================= */
-.not-found {
-  text-align: center; padding: 3rem 0;
-}
+.not-found { text-align: center; padding: 3rem 0; }
 .not-found h1 {
   font-size: 4rem; font-weight: 700;
   background: var(--gradient);
@@ -657,177 +592,160 @@ body::after {
 .not-found p { color: var(--text-muted); margin-top: 0.5rem; }
 
 /* =============================================
-   ANIMATIONS
+   SCALE TRANSITION
    ============================================= */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+.scale-enter {
+  animation: scaleIn 0.45s var(--ease-out-expo) both;
 }
-@keyframes rippleAnim {
-  to { transform: scale(4); opacity: 0; }
+.scale-leave {
+  animation: scaleOut 0.3s var(--ease-out-expo) both;
 }
-
-/* =============================================
-   SCROLL REVEAL
-   ============================================= */
-.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.88); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes scaleOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.92); }
+}
 
 /* =============================================
    RESPONSIVE
    ============================================= */
 @media (max-width: 768px) {
-  .topbar { padding: 0 1rem; }
-  .content-section { padding: 1.5rem 1rem 0.5rem; }
-  .page-header h1 { font-size: 1.35rem; }
-  .prose { font-size: 0.95rem; }
-  .prose h1 { font-size: 1.5rem; }
-  .prose pre { padding: 0.8rem 1rem; font-size: 0.78rem; border-radius: var(--radius-sm); }
-  .comment-section { padding: 0 1rem 2rem; }
-  .comment-form .row { flex-direction: column; }
+  .hero-brand h1 { font-size: 1.4rem; letter-spacing: 0.1em; }
+  .hero-tagline { font-size: 0.65rem; letter-spacing: 0.12em; }
+  .navbar { padding: 6px 12px; border-radius: 14px; }
+  .nav-link { padding: 4px 10px; font-size: 0.7rem; }
+  .nav-logo { font-size: 0.95rem; }
+  .glass-card { padding: 20px 18px; }
+  .content-section { padding: calc(var(--nav-h) + 8px) 12px 0; }
+  .page-header h1 { font-size: 1.2rem; }
+  .prose { font-size: 0.92rem; }
+  .back-top { bottom: 1rem; right: 1rem; width: 34px; height: 34px; font-size: 0.8rem; }
+}
+@media (max-width: 640px) {
+  .nav-link { padding: 4px 8px; font-size: 0.65rem; }
+  .nav-links { gap: 1px; }
+  .nav-wrap { top: 10px; left: 10px; right: 10px; }
 }
 @media (max-width: 480px) {
-  .topbar { padding: 0 0.75rem; }
-  .content-section { padding: 1rem 0.75rem 0.25rem; }
-  .article-card { padding: 1.2rem 1rem; }
-  .page-header { margin-bottom: 1rem; }
-  .page-header h1 { font-size: 1.2rem; }
-  .page-header .divider { width: 36px; }
-  .back-top { bottom: 1rem; right: 1rem; width: 36px; height: 36px; font-size: 0.9rem; }
+  .navbar { flex-wrap: wrap; gap: 4px; padding: 6px 8px; }
+  .nav-links { order: 3; width: 100%; justify-content: center; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.08); }
 }
-
-/* =============================================
-   REDUCED MOTION
-   ============================================= */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-  .reveal { opacity: 1; transform: none; }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══ CUSTOM CURSOR ═══ -->
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
 <!-- ═══ READING PROGRESS ═══ -->
 <div class="progress-bar" id="progressBar"></div>
 
-<!-- ═══ TOP BAR ═══ -->
-<header class="topbar">
-  <div class="topbar-left">
-    <button class="hamburger" id="hamburger" aria-label="打开导航">
-      <span></span><span></span><span></span>
-    </button>
-    <a href="/" class="site-name" style="text-decoration:none">鸿勋</a>
-    <span class="site-tagline">— 计算生物学 · 药物发现</span>
-  </div>
-  <div class="topbar-right">
-    <button class="top-btn" id="themeToggle" aria-label="切换主题" title="切换主题 (Cmd+T)">🌙</button>
-  </div>
-</header>
+<!-- ═══ HERO / LANDING PAGE ═══ -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
 
-<!-- ═══ NAV OVERLAY ═══ -->
-<div class="nav-overlay" id="navOverlay"></div>
+  <!-- Stars -->
+  <div class="stars" id="stars"></div>
 
-<!-- ═══ NAV DRAWER ═══ -->
-<nav class="nav-drawer" id="navDrawer">
-  <div class="nav-header">
-    <h2>鸿勋</h2>
-    <p>计算生物学 · 药物发现</p>
-  </div>
-  <div class="nav-body">
+  <div class="hero-silhouette"></div>
 
-    {% set emoji_map = {
-      '01': '📋', '02': '🔬', '03': '📖', '04': '🗄️', '05': '✍️',
-    } %}
-
-    {% for cat in nav_tree %}
-    {% set folder_name = cat.name %}
-    {% set display_name = folder_name[3:] if '-' in folder_name and folder_name[:2].isdigit() else folder_name %}
-    {% set prefix = folder_name[:2] %}
-    {% set emoji = emoji_map.get(prefix, '📄') %}
-    {% set cat_id = 'cat-' ~ loop.index %}
-
-    <div class="nav-cat">
-      <div class="nav-cat-header" onclick="toggleNavCat(this)">
-        <span class="cat-emoji">{{ emoji }}</span>
-        {{ display_name }}
-        <span class="arrow open">▶</span>
-      </div>
-      <div class="nav-items open" id="{{ cat_id }}">
-
-        {# Direct files in category #}
-        {% for file_slug in cat.files %}
-        {% set file_display = file_slug.split('-', 1)[1] if '-' in file_slug else file_slug %}
-        <a href="/{{ folder_name }}/{{ file_slug }}"
-           class="nav-item {% if current_path.startswith(folder_name ~ '/' ~ file_slug) %}active{% endif %}">
-          {{ file_display }}
-        </a>
+  <!-- Navbar (on hero) -->
+  <div class="nav-wrap">
+    <nav class="navbar" id="navbar">
+      <a href="/" class="nav-logo" data-nav="home">⛰️</a>
+      <div class="nav-links">
+        <a href="/" class="nav-link {% if not current_path or current_path == '01-关于我/个人简介.md' %}active{% endif %}" data-nav="home">首页</a>
+        {% for cat in nav_tree %}
+        {% set prefix = cat.name[:2] %}
+        {% set cat_id = 'cat-' ~ loop.index0 %}
+        {% set file_slug = cat.files[0] if cat.files else (cat.children[0].files[0] if cat.children and cat.children[0].files else '') %}
+        {% set display_name = cat.name[3:] if '-' in cat.name and cat.name[:2].isdigit() else cat.name %}
+        {% set sub_path = '/' ~ cat.children[0].name ~ '/' if cat.children and not cat.files else '/' %}
+        {% set href = '/' ~ cat.name ~ sub_path ~ file_slug if file_slug else '#' %}
+        <a href="{{ href }}" class="nav-link" data-nav="{{ cat_id }}">{{ display_name }}</a>
         {% endfor %}
-
-        {# Nested subdirectories #}
-        {% if cat.children %}
-          {% for child in cat.children %}
-          <div class="nav-subdir-label">{{ child.name }}</div>
-          {% for file_slug in child.files %}
-          {% set file_display = file_slug.split('-', 1)[1] if '-' in file_slug else file_slug %}
-          <a href="/{{ folder_name }}/{{ child.name }}/{{ file_slug }}"
-             class="nav-item nav-subdir-item {% if current_path.startswith(folder_name ~ '/' ~ child.name ~ '/' ~ file_slug) %}active{% endif %}">
-            {{ file_display }}
-          </a>
-          {% endfor %}
-          {% endfor %}
-        {% endif %}
-
       </div>
-    </div>
-    {% endfor %}
+      <div class="nav-right">
+        <button class="nav-theme-btn" id="themeToggle" aria-label="切换主题">🌙</button>
+      </div>
+    </nav>
   </div>
-</nav>
 
-<!-- ═══ MAIN ═══ -->
-<main class="main-wrap">
+  <div class="hero-brand">
+    <h1>SunHongxun'S Site</h1>
+    <div class="hero-divider"></div>
+    <p class="hero-tagline">计算生物学 · 药物发现</p>
+  </div>
 
-  {% if not current_path or current_path == '01-关于我/个人简介.md' %}
-  {# ── Homepage hero ── #}
-  <section class="content-section" style="padding-top:3rem;padding-bottom:0">
-    <div class="page-header">
-      <h1>{{ page_title }}</h1>
-      <div class="divider"></div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-mouse"><div class="hero-scroll-dot"></div></div>
+  </div>
+</section>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<main class="content-section" id="contentSection">
+  <div class="content-inner">
+
+    <!-- Nabvar (on content page) -->
+    <div class="nav-wrap" style="position:static;margin-bottom:20px">
+      <nav class="navbar">
+        <a href="/" class="nav-logo" data-nav="home">⛰️</a>
+        <div class="nav-links">
+          <a href="/" class="nav-link" data-nav="home">首页</a>
+          {% for cat in nav_tree %}
+          {% set prefix = cat.name[:2] %}
+          {% set cat_id = 'cat-' ~ loop.index0 %}
+          {% set file_slug = cat.files[0] if cat.files else '' %}
+          {% set display_name = cat.name[3:] if '-' in cat.name and cat.name[:2].isdigit() else cat.name %}
+          {% set href = '/' ~ cat.name ~ '/' ~ file_slug if file_slug else '#' %}
+          <a href="{{ href }}" class="nav-link" data-nav="{{ cat_id }}">{{ display_name }}</a>
+          {% endfor %}
+        </div>
+        <div class="nav-right">
+          <button class="nav-theme-btn" id="themeToggle2" aria-label="切换主题">🌙</button>
+        </div>
+      </nav>
     </div>
-    <div class="article-card">
+
+    <!-- Article card -->
+    <div class="glass-card" id="articleCard">
+      {% if current_path %}
+      <div class="page-header">
+        {% set section_prefix = current_path[:2] if current_path and '-' in current_path[:4] else '' %}
+        {% set emoji_map = {'01': '📋', '02': '🔬', '03': '📖', '04': '🗄️', '05': '✍️'} %}
+        <div class="section-tag">
+          <span class="section-dot"></span>
+          {% if section_prefix and section_prefix in emoji_map %}{{ emoji_map[section_prefix] }}{% endif %}
+          {% if section_prefix == '01' %} 关于我
+          {% elif section_prefix == '02' %} 我的研究
+          {% elif section_prefix == '03' %} 实验手册
+          {% elif section_prefix == '04' %} 抽屉
+          {% elif section_prefix == '05' %} 随笔
+          {% endif %}
+        </div>
+        <h1>{{ page_title }}</h1>
+        <div class="divider"></div>
+      </div>
       <div class="prose">{{ content | safe }}</div>
+      {% endif %}
     </div>
-  </section>
-  {% else %}
-  {# ── Regular page ── #}
-  <section class="content-section">
-    <div class="page-header">
-      <h1>{{ page_title }}</h1>
-      <div class="divider"></div>
-    </div>
-    <div class="article-card">
-      <div class="prose">{{ content | safe }}</div>
-    </div>
-  </section>
-  {% endif %}
 
-  <!-- ═══ COMMENTS ═══ -->
-  {% if content %}
-  <section class="comment-section">
-    <div class="comment-card">
+    <!-- Comments -->
+    {% if current_path %}
+    <div class="glass-card-comments comment-section" id="commentSection">
       <h3>💬 留言</h3>
-      <form action="/submit_comment" method="post" class="comment-form">
+      <form class="comment-form" id="commentForm">
         <input type="hidden" name="page_path" value="{{ current_path }}">
-        <div class="row">
+        <div class="comment-row">
           <input type="text" name="username" placeholder="你的昵称" required class="comment-input">
         </div>
         <textarea name="content" rows="3" placeholder="写下你的想法..." required class="comment-input"></textarea>
-        <button type="submit" class="btn-primary">发送</button>
+        <button type="submit" class="btn-send">发送</button>
       </form>
-      <div>
+      <div id="commentsList">
         {% for c in comments %}
         <div class="comment-item">
           <div class="header">
@@ -840,16 +758,16 @@ body::after {
           <p class="text">{{ c[1] }}</p>
         </div>
         {% else %}
-        <div class="empty-comments">✨ 暂无留言</div>
+        <div class="empty-comments" id="emptyComments">✨ 暂无留言</div>
         {% endfor %}
       </div>
     </div>
-  </section>
-  {% endif %}
+    {% endif %}
 
-  <footer class="footer">
-    <p>© 2026 鸿勋 · 以 Markdown 书写</p>
-  </footer>
+    <footer class="footer">
+      <p>© 2026 鸿勋 · 以 Markdown 书写</p>
+    </footer>
+  </div>
 </main>
 
 <!-- ═══ BACK TO TOP ═══ -->
@@ -857,7 +775,28 @@ body::after {
 
 <script>
 // ══════════════════════════════════════════
-// 1. THEME
+// 1. STARS
+// ══════════════════════════════════════════
+(function() {
+  const container = document.getElementById('stars');
+  const count = 20;
+  for (let i = 0; i < count; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = 1 + Math.random() * 2;
+    star.style.cssText = `
+      width:${size}px;height:${size}px;
+      top:${Math.random() * 40}%;left:${Math.random() * 100}%;
+      --dur:${2 + Math.random() * 3}s;
+      --delay:${Math.random() * 3}s;
+      background:${Math.random() > 0.7 ? '#ffd700' : '#fff'};
+    `;
+    container.appendChild(star);
+  }
+})();
+
+// ══════════════════════════════════════════
+// 2. THEME
 // ══════════════════════════════════════════
 (function() {
   const key = 'blog-theme';
@@ -865,8 +804,9 @@ body::after {
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const theme = saved || (prefersDark ? 'dark' : 'light');
   document.documentElement.setAttribute('data-theme', theme);
-  const btn = document.getElementById('themeToggle');
-  btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  document.querySelectorAll('.nav-theme-btn').forEach(btn => {
+    btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  });
 })();
 
 function toggleTheme() {
@@ -875,102 +815,242 @@ function toggleTheme() {
   const next = cur === 'dark' ? 'light' : 'dark';
   html.setAttribute('data-theme', next);
   localStorage.setItem('blog-theme', next);
-  const btn = document.getElementById('themeToggle');
-  btn.textContent = next === 'dark' ? '☀️' : '🌙';
-  btn.style.transform = 'scale(1.2)';
-  setTimeout(() => btn.style.transform = '', 300);
+  document.querySelectorAll('.nav-theme-btn').forEach(btn => {
+    btn.textContent = next === 'dark' ? '☀️' : '🌙';
+  });
 }
-document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+document.querySelectorAll('.nav-theme-btn').forEach(btn => {
+  btn.addEventListener('click', toggleTheme);
+});
 
 // ══════════════════════════════════════════
-// 2. CURSOR FOLLOWER (desktop only)
+// 3. PAGE TRANSITIONS
 // ══════════════════════════════════════════
-if (window.matchMedia('(pointer: fine)').matches) {
-  const dot = document.getElementById('cursorDot');
-  const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0;
-  let rx = 0, ry = 0;
-  let raf = null;
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX;
-    my = e.clientY;
-    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
-    if (!raf) {
-      raf = requestAnimationFrame(function animate() {
-        rx += (mx - rx) * 0.12;
-        ry += (my - ry) * 0.12;
-        ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
-        raf = requestAnimationFrame(animate);
+// Section color mapping
+const sectionColors = [
+  [254, 141, 159],  // 0: 关于我
+  [247, 226, 231],  // 1: 研究
+  [255, 225, 225],  // 2: 实验手册
+  [227, 244, 255],  // 3: 抽屉
+  [188, 227, 245],  // 4: 随笔
+];
+
+const sections = ['01-关于我', '02-我的研究', '03-实验手册', '04-抽屉', '05-随笔'];
+const sectionNames = ['关于我', '我的研究', '实验手册', '抽屉', '随笔'];
+const sectionEmojis = ['📋', '🔬', '📖', '🗄️', '✍️'];
+
+const hero = document.getElementById('hero');
+const contentSection = document.getElementById('contentSection');
+const articleCard = document.getElementById('articleCard');
+const commentSection = document.getElementById('commentSection');
+const commentsList = document.getElementById('commentsList');
+const emptyComments = document.getElementById('emptyComments');
+const contentInner = contentSection.querySelector('.content-inner');
+const pageHeader = articleCard?.querySelector('.page-header');
+const prose = articleCard?.querySelector('.prose');
+const commentForm = document.getElementById('commentForm');
+
+function getSectionIndex(path) {
+  if (!path) return -1;
+  for (let i = 0; i < sections.length; i++) {
+    if (path.startsWith(sections[i])) return i;
+  }
+  return -1;
+}
+
+function setSectionColor(index) {
+  const root = document.documentElement;
+  if (index >= 0 && index < sectionColors.length) {
+    root.style.setProperty('--section-color', sectionColors[index].join(', '));
+  } else {
+    root.style.setProperty('--section-color', '254, 141, 159');
+  }
+}
+
+function updateNavActive(path) {
+  document.querySelectorAll('.nav-link').forEach(link => {
+    const nav = link.dataset.nav;
+    link.classList.remove('active');
+    if (nav === 'home' && (!path || path === '01-关于我/个人简介.md')) {
+      link.classList.add('active');
+    } else if (nav && nav.startsWith('cat-')) {
+      const idx = parseInt(nav.split('-')[1]);
+      if (idx >= 0 && idx < sections.length && path && path.startsWith(sections[idx])) {
+        link.classList.add('active');
+      }
+    }
+  });
+}
+
+function showHero() {
+  hero.classList.remove('hidden');
+  contentSection.classList.remove('visible');
+  document.title = '鸿勋';
+  window.scrollTo({ top: 0 });
+  updateNavActive('');
+}
+
+function showContent(title, html, comments, sectionIdx, path) {
+  hero.classList.add('hidden');
+  setSectionColor(sectionIdx);
+
+  // Update page header
+  if (pageHeader) {
+    const tag = pageHeader.querySelector('.section-tag');
+    if (tag) {
+      const emoji = sectionIdx >= 0 ? sectionEmojis[sectionIdx] : '📄';
+      const name = sectionIdx >= 0 ? sectionNames[sectionIdx] : '';
+      tag.innerHTML = `<span class="section-dot"></span> ${emoji} ${name}`;
+    }
+    const h1 = pageHeader.querySelector('h1');
+    if (h1) h1.textContent = title;
+  }
+
+  // Update content
+  if (prose) {
+    prose.innerHTML = html;
+    // Re-render code blocks with syntax highlighting if needed
+  }
+
+  // Update comments
+  if (commentsList) {
+    if (comments && comments.length > 0) {
+      commentsList.innerHTML = comments.map(c =>
+        `<div class="comment-item">
+          <div class="header">
+            <div class="user-info">
+              <div class="avatar">${c.username.charAt(0).toUpperCase()}</div>
+              <span class="name">${escapeHtml(c.username)}</span>
+            </div>
+            <span class="time">${c.timestamp}</span>
+          </div>
+          <p class="text">${escapeHtml(c.content)}</p>
+        </div>`
+      ).join('');
+    } else {
+      commentsList.innerHTML = '<div class="empty-comments">✨ 暂无留言</div>';
+    }
+  }
+
+  // Update comment form action
+  if (commentForm && commentForm.querySelector('input[name="page_path"]')) {
+    commentForm.querySelector('input[name="page_path"]').value = path;
+  }
+
+  document.title = title + ' — 鸿勋';
+  updateNavActive(path);
+
+  // Show content with animation
+  requestAnimationFrame(() => {
+    contentSection.classList.add('visible');
+  });
+
+  window.scrollTo({ top: 0 });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ══════════════════════════════════════════
+// 4. NAVIGATION INTERCEPT
+// ══════════════════════════════════════════
+
+document.addEventListener('click', async e => {
+  const link = e.target.closest('a[data-nav]');
+  if (!link) return;
+
+  const href = link.getAttribute('href');
+  if (!href || href === '#' || href.startsWith('http')) return;
+
+  e.preventDefault();
+
+  // If home, show hero
+  if (link.dataset.nav === 'home' && (href === '/' || href === '')) {
+    showHero();
+    window.history.pushState({}, '', '/');
+    return;
+  }
+
+  // Fetch content
+  const path = href.replace(/^\//, '');
+  const url = `/api/content/${path}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      if (res.status === 404) {
+        showContent('404', '<div class="not-found"><h1>404</h1><p>页面未找到</p></div>', [], -1, path);
+        window.history.pushState({}, '', href);
+      }
+      return;
+    }
+    const data = await res.json();
+    const sectionIdx = data.section_index !== undefined ? data.section_index : getSectionIndex(path);
+    showContent(data.title, data.html, data.comments || [], sectionIdx, path + '.md');
+    window.history.pushState({}, '', href);
+  } catch (err) {
+    console.error('Navigation error:', err);
+  }
+});
+
+// Handle browser back/forward
+window.addEventListener('popstate', async () => {
+  const path = window.location.pathname;
+  if (path === '/' || !path) {
+    showHero();
+    return;
+  }
+
+  const targetPath = path.replace(/^\//, '');
+  const url = `/api/content/${targetPath}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return;
+    const data = await res.json();
+    const sectionIdx = data.section_index !== undefined ? data.section_index : getSectionIndex(targetPath);
+    showContent(data.title, data.html, data.comments || [], sectionIdx, targetPath + '.md');
+  } catch (err) {
+    console.error('Popstate error:', err);
+  }
+});
+
+// ══════════════════════════════════════════
+// 5. COMMENT SUBMIT (via fetch)
+// ══════════════════════════════════════════
+
+if (commentForm) {
+  commentForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const formData = new FormData(commentForm);
+    try {
+      await fetch('/submit_comment', {
+        method: 'POST',
+        body: formData,
       });
+      // Reload comments
+      const pagePath = formData.get('page_path');
+      const res = await fetch(`/api/content/${pagePath.replace(/\.md$/, '')}`);
+      if (res.ok) {
+        const data = await res.json();
+        const sectionIdx = data.section_index !== undefined ? data.section_index : getSectionIndex(pagePath);
+        showContent(data.title, data.html, data.comments || [], sectionIdx, pagePath);
+      }
+      commentForm.querySelector('textarea[name="content"]').value = '';
+    } catch (err) {
+      console.error('Comment error:', err);
     }
   });
-
-  document.addEventListener('mouseleave', () => {
-    ring.classList.add('hide');
-  });
-  document.addEventListener('mouseenter', () => {
-    ring.classList.remove('hide');
-  });
-
-  // Hover effect
-  document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
-    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
-    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
-  });
 }
 
 // ══════════════════════════════════════════
-// 3. NAVIGATION DRAWER
+// 6. READING PROGRESS + BACK TO TOP
 // ══════════════════════════════════════════
-const drawer = document.getElementById('navDrawer');
-const overlay = document.getElementById('navOverlay');
-const hamburger = document.getElementById('hamburger');
 
-function openNav() {
-  drawer.classList.add('open');
-  overlay.classList.add('active');
-  hamburger.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-function closeNav() {
-  drawer.classList.remove('open');
-  overlay.classList.remove('active');
-  hamburger.classList.remove('active');
-  document.body.style.overflow = '';
-}
-hamburger.addEventListener('click', () => {
-  drawer.classList.contains('open') ? closeNav() : openNav();
-});
-overlay.addEventListener('click', closeNav);
-document.querySelectorAll('.nav-item').forEach(el => {
-  el.addEventListener('click', () => { if (window.innerWidth <= 1024) closeNav(); });
-});
-
-// Accordion: auto-open current category
-function toggleNavCat(header) {
-  const items = header.nextElementSibling;
-  const arrow = header.querySelector('.arrow');
-  if (items) items.classList.toggle('open');
-  if (arrow) arrow.classList.toggle('open');
-}
-
-// Auto-open active item's category
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.nav-item.active').forEach(item => {
-    const cat = item.closest('.nav-cat');
-    if (cat) {
-      const items = cat.querySelector('.nav-items');
-      const arrow = cat.querySelector('.arrow');
-      if (items) items.classList.add('open');
-      if (arrow) arrow.classList.add('open');
-    }
-  });
-});
-
-// ══════════════════════════════════════════
-// 4. READING PROGRESS + BACK TO TOP
-// ══════════════════════════════════════════
 const progressBar = document.getElementById('progressBar');
 const backTop = document.getElementById('backTop');
 
@@ -986,50 +1066,41 @@ backTop.addEventListener('click', () => {
 });
 
 // ══════════════════════════════════════════
-// 5. SCROLL REVEAL
-// ══════════════════════════════════════════
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
-
-// ══════════════════════════════════════════
-// 6. RIPPLE EFFECT
-// ══════════════════════════════════════════
-document.querySelectorAll('.btn-primary').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    const rect = this.getBoundingClientRect();
-    const ripple = document.createElement('span');
-    ripple.className = 'ripple';
-    const size = Math.max(rect.width, rect.height);
-    ripple.style.width = ripple.style.height = size + 'px';
-    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-    ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-    this.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 600);
-  });
-});
-
-// ══════════════════════════════════════════
 // 7. KEYBOARD SHORTCUTS
 // ══════════════════════════════════════════
+
 document.addEventListener('keydown', e => {
-  // Cmd/Ctrl + T : toggle theme
   if ((e.metaKey || e.ctrlKey) && e.key === 't') {
     e.preventDefault();
     toggleTheme();
   }
-  // / : focus nav search (future)
-  // Escape : close nav
-  if (e.key === 'Escape' && drawer.classList.contains('open')) {
-    closeNav();
+  if (e.key === 'Escape') {
+    // Close any open overlays
   }
 });
+
+// ══════════════════════════════════════════
+// 8. INITIAL STATE
+// ══════════════════════════════════════════
+
+(function() {
+  const path = window.location.pathname;
+  if (path === '/' || !path) {
+    // Landing page: show hero
+    hero.classList.remove('hidden');
+    contentSection.classList.remove('visible');
+    // Set section color for nav highlighting
+    setSectionColor(-1);
+    updateNavActive('');
+  } else {
+    // Content page: determine section and show content
+    hero.classList.add('hidden');
+    contentSection.classList.add('visible');
+    const sectionIdx = getSectionIndex(path.replace(/^\//, ''));
+    setSectionColor(sectionIdx >= 0 ? sectionIdx : 0);
+    updateNavActive(path.replace(/^\//, ''));
+  }
+})();
 </script>
 </body>
 </html>

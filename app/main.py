@@ -91,6 +91,43 @@ async def nav_api():
     return get_directory_tree(KNOWLEDGE_BASE_DIR)
 
 
+# ── JSON 内容 API（供前端 SPA 过渡导航）──
+
+@app.get("/api/content/{path:path}")
+async def api_content(path: str):
+    target_md = path if path.endswith(".md") else path + ".md"
+    target_file = KNOWLEDGE_BASE_DIR / target_md
+
+    if not target_file.exists() or not target_file.is_file():
+        return JSONResponse({"error": "not found"}, status_code=404)
+
+    md_text = target_file.read_text(encoding="utf-8")
+    title = extract_title(md_text, target_md)
+    html = render_markdown(md_text)
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT username, content, timestamp FROM comments WHERE page_path=? ORDER BY timestamp DESC",
+        (target_md,),
+    )
+    comments = [
+        {"username": r[0], "content": r[1], "timestamp": r[2]}
+        for r in cursor.fetchall()
+    ]
+    conn.close()
+
+    # 提取板块索引（01-xx → 0, 02-xx → 1, ...）
+    section_index = -1
+    dirs = sorted(d for d in KNOWLEDGE_BASE_DIR.iterdir() if d.is_dir())
+    for i, child in enumerate(dirs):
+        if str(target_file).startswith(str(child)):
+            section_index = i
+            break
+
+    return {"title": title, "html": html, "comments": comments, "section_index": section_index}
+
+
 # ── 从 Markdown 提取标题 ──
 
 def extract_title(md_text: str, fallback: str) -> str:
@@ -123,15 +160,28 @@ def render_markdown(md_text: str) -> str:
 @app.get("/", response_class=HTMLResponse)
 @app.get("/{file_path:path}", response_class=HTMLResponse)
 async def read_page(request: Request, file_path: str = ""):
-    # 默认首页
-    target_md = file_path if file_path else "01-关于我/个人简介"
+    nav_tree = get_directory_tree(KNOWLEDGE_BASE_DIR)
+
+    if not file_path:
+        # 首页 → 显示 Landing Page
+        return templates.TemplateResponse(
+            request=request,
+            name="index.html",
+            context={
+                "content": "",
+                "nav_tree": nav_tree,
+                "current_path": "",
+                "comments": [],
+                "page_title": "鸿勋",
+            },
+        )
+
+    # 内容页
+    target_md = file_path
     if not target_md.endswith(".md"):
         target_md += ".md"
 
     target_file = KNOWLEDGE_BASE_DIR / target_md
-
-    content_html = ""
-    page_title = "鸿勋"
     page_exists = target_file.exists() and target_file.is_file()
 
     if page_exists:
@@ -140,10 +190,8 @@ async def read_page(request: Request, file_path: str = ""):
         content_html = render_markdown(md_text)
     else:
         content_html = '<div class="not-found"><h1>404</h1><p>页面未找到</p></div>'
+        page_title = "404"
 
-    nav_tree = get_directory_tree(KNOWLEDGE_BASE_DIR)
-
-    # 留言
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(

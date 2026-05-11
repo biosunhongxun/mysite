@@ -13,6 +13,9 @@ build/
 # Environment config with secrets
 .env
 
+# Brainstorming artifacts
+.superpowers/
+
 # OS files
 .DS_Store
 Thumbs.db
