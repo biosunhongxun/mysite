@@ -10,10 +10,12 @@ echo "==> 上传至 $SERVER:$REMOTE_DIR ..."
 rsync -avz --delete \
     --exclude '.git/' \
     --exclude '.env' \
+    --exclude '.superpowers/' \
     --exclude '__pycache__/' \
     --exclude '*.pyc' \
     --exclude '.DS_Store' \
     --exclude '*.db' \
+    --exclude '收件箱/' \
     "$LOCAL_DIR/" "$SERVER:$REMOTE_DIR/"
 
 echo "==> 安装/更新 Python 依赖 ..."
