@@ -14,7 +14,7 @@
   --bg: #f8f5f0;
   --bg-card: #ffffff;
   --bg-card-hover: #faf8f5;
-  --bg-sidebar: rgba(255,255,255,0.92);
+  --bg-sidebar: rgba(255,255,255,0.75);
   --bg-code-inline: #f0ece6;
   --bg-code-block: #1c1b1a;
   --text: #2c2824;
@@ -493,7 +493,7 @@ body{
 
         {% for file_slug in cat.files %}
         {% set file_display = file_slug.split('-',1)[1] if '-' in file_slug else file_slug %}
-        <a href="/{{ cat.name }}/{{ file_slug }}" class="sidebar-item{% if current_path.startswith(cat.name ~ '/' ~ file_slug) %} active{% endif %}" data-nav="{{ cat_id }}">
+        <a href="/{{ cat.name }}/{{ file_slug }}" class="sidebar-item{% if current_path.startswith(cat.name ~ '/' ~ file_slug) %} active{% endif %}">
           {{ file_display }}
         </a>
         {% endfor %}
@@ -504,7 +504,7 @@ body{
           {% for file_slug in child.files %}
           {% set file_display = file_slug.split('-',1)[1] if '-' in file_slug else file_slug %}
           <a href="/{{ cat.name }}/{{ child.name }}/{{ file_slug }}"
-             class="sidebar-item sidebar-subdir-item{% if current_path.startswith(cat.name ~ '/' ~ child.name ~ '/' ~ file_slug) %} active{% endif %}" data-nav="{{ cat_id }}">
+             class="sidebar-item sidebar-subdir-item{% if current_path.startswith(cat.name ~ '/' ~ child.name ~ '/' ~ file_slug) %} active{% endif %}">
             {{ file_display }}
           </a>
           {% endfor %}
@@ -821,17 +821,6 @@ document.addEventListener('click',async e=>{
     showHero();
     window.history.pushState({},'','/');
     return;
-  }
-
-  // Category links in sidebar → show listing
-  if(link.dataset.nav&&link.dataset.nav.startsWith('cat-')){
-    e.preventDefault();
-    const idx=parseInt(link.dataset.nav.split('-')[1]);
-    if(idx>=0&&idx<navTreeData.length){
-      showCategoryListing(navTreeData[idx],idx);
-      window.history.pushState({},'',href);
-      return;
-    }
   }
 
   // Sidebar file links → fetch content
