@@ -143,29 +143,26 @@ body {
   position: absolute; inset: 0;
   /* 默认渐变背景 — 修改这里可换成图片 background: url('/static/landscape.jpg') center/cover */
   background: linear-gradient(180deg,
-    rgb(180,140,130) 0%,
-    rgb(255,217,210) 30%,
-    rgb(233,236,210) 55%,
-    rgb(210,255,251) 80%,
-    #b8d4d0 100%);
+    #76689A 0%,
+    #5C619D 30%,
+    #3d4a6e 55%,
+    #1B2B41 80%,
+    #0d1520 100%);
   z-index: -1;
 }
 [data-theme="dark"] .hero-bg {
   background: linear-gradient(180deg,
-    rgb(40,25,20) 0%,
-    rgb(60,35,25) 30%,
-    rgb(50,45,40) 55%,
-    rgb(30,50,55) 80%,
-    rgb(25,45,50) 100%);
+    #3d3352 0%,
+    #2c3058 30%,
+    #1a2035 55%,
+    #0d1520 80%,
+    #080b12 100%);
 }
 .hero-silhouette {
   position: absolute; bottom: 0; left: 0; right: 0; height: 25%;
-  background: linear-gradient(180deg, transparent 0%, rgba(160,190,185,0.20) 50%, rgba(140,175,170,0.35) 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(118,104,154,0.15) 50%, rgba(27,43,65,0.3) 100%);
   border-radius: 55% 40% 0 0 / 30% 25% 0 0;
   z-index: -1;
-}
-[data-theme="dark"] .hero-silhouette {
-  background: linear-gradient(180deg, transparent 0%, rgba(20,40,45,0.3) 50%, rgba(15,35,40,0.5) 100%);
 }
 
 .hero-brand {
@@ -174,30 +171,27 @@ body {
 }
 .hero-brand h1 {
   font-family: var(--font-serif);
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   font-weight: 400;
   font-style: italic;
-  color: rgb(80, 50, 40);
+  color: #fff;
   letter-spacing: 0.14em;
-  text-shadow: 0 2px 20px rgba(255,255,255,0.3);
+  text-shadow: 0 2px 30px rgba(0,0,0,0.3);
 }
-[data-theme="dark"] .hero-brand h1 { color: rgb(220, 200, 180); }
 .hero-divider {
-  width: 32px; height: 1px;
-  background: rgba(80, 50, 40, 0.15);
-  margin: 6px auto 0;
+  width: 36px; height: 1.5px;
+  background: rgba(255, 255, 255, 0.25);
+  margin: 8px auto 0;
   animation: heroFadeUp 0.8s ease 0.5s both;
 }
-[data-theme="dark"] .hero-divider { background: rgba(220, 200, 180, 0.2); }
 .hero-tagline {
-  margin-top: 10px;
-  font-size: 0.75rem;
-  color: rgb(120, 90, 75);
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.55);
   letter-spacing: 0.18em;
-  font-weight: 400;
+  font-weight: 300;
   animation: heroFadeUp 0.8s ease 0.6s both;
 }
-[data-theme="dark"] .hero-tagline { color: rgb(180, 160, 140); }
 
 .hero-scroll {
   position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
@@ -206,19 +200,17 @@ body {
 }
 .hero-scroll-mouse {
   width: 20px; height: 30px;
-  border: 1.5px solid rgba(80, 50, 40, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px; margin: 0 auto; position: relative;
 }
-[data-theme="dark"] .hero-scroll-mouse { border-color: rgba(220, 200, 180, 0.2); }
 .hero-scroll-dot {
   width: 2.5px; height: 5px;
-  background: rgba(80, 50, 40, 0.3);
+  background: rgba(255, 255, 255, 0.4);
   border-radius: 2px;
   position: absolute; top: 5px; left: 50%;
   transform: translateX(-50%);
   animation: scrollDot 1.5s ease infinite;
 }
-[data-theme="dark"] .hero-scroll-dot { background: rgba(220, 200, 180, 0.3); }
 
 @keyframes heroFadeUp {
   from { opacity: 0; transform: translateY(16px); }
@@ -263,9 +255,9 @@ body {
 }
 .nav-links { display: flex; gap: 3px; }
 .nav-link {
-  padding: 5px 14px;
+  padding: 6px 16px;
   border-radius: 10px;
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   color: rgba(80, 70, 65, 0.65);
   text-decoration: none;
   font-weight: 500;
@@ -369,7 +361,7 @@ body {
 .page-header { margin-bottom: 24px; }
 .page-header .section-tag {
   display: flex; align-items: center; gap: 6px;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: rgb(var(--section-color));
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -379,7 +371,7 @@ body {
   background: rgb(var(--section-color));
 }
 .page-header h1 {
-  font-size: 1.5rem; font-weight: 700;
+  font-size: 1.8rem; font-weight: 700;
   color: var(--text);
   margin-top: 6px;
   letter-spacing: -0.02em;
@@ -395,16 +387,16 @@ body {
 /* =============================================
    PROSE (article content)
    ============================================= */
-.prose { font-size: 1rem; line-height: 1.85; color: var(--text); }
+.prose { font-size: 1.05rem; line-height: 1.8; color: var(--text); }
 .prose h2 {
-  font-size: 1.3rem; font-weight: 600;
+  font-size: 1.45rem; font-weight: 600;
   margin-top: 2rem; margin-bottom: 0.75rem;
   padding-bottom: 0.35rem;
   border-bottom: 1px solid var(--border-light);
   line-height: 1.4;
 }
 .prose h3 {
-  font-size: 1.1rem; font-weight: 600;
+  font-size: 1.2rem; font-weight: 600;
   margin-top: 1.6rem; margin-bottom: 0.5rem;
   line-height: 1.4;
 }
@@ -538,9 +530,9 @@ body {
   font-size: 0.7rem; font-weight: 600; color: white;
   flex-shrink: 0;
 }
-.comment-item .name { font-weight: 600; color: var(--accent); font-size: 0.82rem; }
-.comment-item .time { font-size: 0.72rem; color: var(--text-muted); }
-.comment-item .text { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6; }
+.comment-item .name { font-weight: 600; color: var(--accent); font-size: 0.9rem; }
+.comment-item .time { font-size: 0.78rem; color: var(--text-muted); }
+.comment-item .text { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; }
 .empty-comments { text-align: center; color: var(--text-muted); font-size: 0.82rem; padding: 20px 0; }
 
 /* =============================================
@@ -613,15 +605,15 @@ body {
    RESPONSIVE
    ============================================= */
 @media (max-width: 768px) {
-  .hero-brand h1 { font-size: 1.4rem; letter-spacing: 0.1em; }
-  .hero-tagline { font-size: 0.65rem; letter-spacing: 0.12em; }
+  .hero-brand h1 { font-size: 1.8rem; letter-spacing: 0.1em; }
+  .hero-tagline { font-size: 0.78rem; letter-spacing: 0.12em; }
   .navbar { padding: 6px 12px; border-radius: 14px; }
-  .nav-link { padding: 4px 10px; font-size: 0.7rem; }
+  .nav-link { padding: 4px 10px; font-size: 0.75rem; }
   .nav-logo { font-size: 0.95rem; }
   .glass-card { padding: 20px 18px; }
   .content-section { padding: calc(var(--nav-h) + 8px) 12px 0; }
-  .page-header h1 { font-size: 1.2rem; }
-  .prose { font-size: 0.92rem; }
+  .page-header h1 { font-size: 1.4rem; }
+  .prose { font-size: 0.98rem; }
   .back-top { bottom: 1rem; right: 1rem; width: 34px; height: 34px; font-size: 0.8rem; }
 }
 @media (max-width: 640px) {
