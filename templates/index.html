@@ -279,10 +279,11 @@ body{
 }
 .meteor::after{
   content:'';position:absolute;
-  top:50%;transform:translateY(-50%);
-  width:160px;height:1px;
-  background:linear-gradient(to left,rgba(255,255,255,.4),transparent);
-  right:2px;
+  top:50%;left:2px;
+  width:140px;height:1px;
+  background:linear-gradient(to right,rgba(255,255,255,.5),transparent);
+  transform:rotate(-35deg);
+  transform-origin:left center;
 }
 @keyframes meteorFall{
   0%{opacity:1;transform:translate(0,0)}

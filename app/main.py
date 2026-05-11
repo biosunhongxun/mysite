@@ -104,6 +104,9 @@ async def api_content(path: str):
     md_text = target_file.read_text(encoding="utf-8")
     title = extract_title(md_text, target_md)
     html = render_markdown(md_text)
+    # 如果 markdown 没有 h1，自动补一个渐变标题
+    if not html.lstrip().startswith("<h1"):
+        html = f"<h1>{title}</h1>\n" + html
 
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -188,6 +191,8 @@ async def read_page(request: Request, file_path: str = ""):
         md_text = target_file.read_text(encoding="utf-8")
         page_title = extract_title(md_text, target_md)
         content_html = render_markdown(md_text)
+        if not content_html.lstrip().startswith("<h1"):
+            content_html = f"<h1>{page_title}</h1>\n" + content_html
     else:
         content_html = '<div class="not-found"><h1>404</h1><p>页面未找到</p></div>'
         page_title = "404"
