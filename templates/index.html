@@ -233,52 +233,52 @@ body {
 .navbar {
   display: flex; align-items: center;
   justify-content: space-between;
-  padding: 8px 18px;
-  width: 100%; max-width: 780px;
-  background: rgba(var(--c-nav), 0.12);
+  padding: 10px 20px;
+  width: 100%; max-width: 820px;
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(24px) saturate(1.3);
   -webkit-backdrop-filter: blur(24px) saturate(1.3);
   border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.20);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
   pointer-events: auto;
   transition: background 0.45s ease, border-color 0.45s ease;
 }
 [data-theme="dark"] .navbar {
-  background: rgba(30, 30, 30, 0.6);
+  background: rgba(30, 30, 30, 0.85);
   border-color: rgba(255, 255, 255, 0.06);
 }
 .nav-logo {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-decoration: none;
   line-height: 1;
 }
-.nav-links { display: flex; gap: 3px; }
+.nav-links { display: flex; gap: 4px; }
 .nav-link {
   padding: 6px 16px;
   border-radius: 10px;
-  font-size: 0.82rem;
-  color: rgba(80, 70, 65, 0.65);
+  font-size: 0.9rem;
+  color: #2c2824;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.25s ease;
   position: relative;
   white-space: nowrap;
+  font-family: var(--font-serif);
+  letter-spacing: 0.03em;
 }
-[data-theme="dark"] .nav-link { color: rgba(200, 190, 180, 0.6); }
+[data-theme="dark"] .nav-link { color: #e6e2dd; }
 .nav-link:hover {
-  color: rgb(80, 70, 65);
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(217, 119, 6, 0.08);
+  color: #2c2824;
 }
-[data-theme="dark"] .nav-link:hover { color: rgb(220, 210, 200); }
+[data-theme="dark"] .nav-link:hover { color: #e6e2dd; background: rgba(245, 158, 11, 0.1); }
 .nav-link.active {
-  color: rgb(var(--section-color));
-  background: rgba(var(--section-color), 0.15);
+  color: #2c2824;
   font-weight: 600;
+  background: rgba(217, 119, 6, 0.10);
 }
-[data-theme="dark"] .nav-link.active {
-  background: rgba(var(--section-color), 0.12);
-}
+[data-theme="dark"] .nav-link.active { color: #e6e2dd; background: rgba(245, 158, 11, 0.10); }
 .nav-right { display: flex; align-items: center; gap: 4px; }
 .nav-theme-btn {
   width: 32px; height: 32px; display: flex;
@@ -323,16 +323,15 @@ body {
 .glass-card {
   border-radius: 18px;
   padding: 32px 36px;
-  background: rgba(var(--section-color), 0.10);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(var(--section-color), 0.18);
-  box-shadow: 0 4px 24px rgba(var(--section-color), 0.06);
+  background: #fff;
+  border: 1px solid #e8e2da;
+  box-shadow: 0 2px 12px rgba(44, 40, 36, 0.04), 0 8px 32px rgba(44, 40, 36, 0.02);
   transition: background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
 }
 [data-theme="dark"] .glass-card {
-  background: rgba(var(--section-color), 0.06);
-  border-color: rgba(var(--section-color), 0.10);
+  background: #242220;
+  border-color: #33302c;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 @media (max-width: 640px) {
   .glass-card { padding: 20px 18px; border-radius: 14px; }
@@ -343,15 +342,14 @@ body {
   margin-top: 16px;
   border-radius: 18px;
   padding: 24px 28px;
-  background: rgba(var(--c-nav), 0.06);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(var(--c-nav), 0.12);
+  background: #fff;
+  border: 1px solid #e8e2da;
+  box-shadow: 0 2px 12px rgba(44, 40, 36, 0.04);
   transition: background 0.45s ease, border-color 0.45s ease;
 }
 [data-theme="dark"] .glass-card-comments {
-  background: rgba(var(--c-nav), 0.04);
-  border-color: rgba(var(--c-nav), 0.08);
+  background: #242220;
+  border-color: #33302c;
 }
 @media (max-width: 640px) {
   .glass-card-comments { padding: 18px 16px; }
@@ -726,6 +724,9 @@ body {
     </div>
 
     <!-- Comments -->
+    <!-- ═══ NAV TREE DATA (for JS category listing) ═══ -->
+<script id="navTreeData" type="application/json">{{ nav_tree | tojson | safe }}</script>
+
     {% if current_path %}
     <div class="glass-card-comments comment-section" id="commentSection">
       <h3>💬 留言</h3>
@@ -851,20 +852,11 @@ function getSectionIndex(path) {
   return -1;
 }
 
-function setSectionColor(index) {
-  const root = document.documentElement;
-  if (index >= 0 && index < sectionColors.length) {
-    root.style.setProperty('--section-color', sectionColors[index].join(', '));
-  } else {
-    root.style.setProperty('--section-color', '254, 141, 159');
-  }
-}
-
 function updateNavActive(path) {
   document.querySelectorAll('.nav-link').forEach(link => {
     const nav = link.dataset.nav;
     link.classList.remove('active');
-    if (nav === 'home' && (!path || path === '01-关于我/个人简介.md')) {
+    if (nav === 'home' && (!path || path === '')) {
       link.classList.add('active');
     } else if (nav && nav.startsWith('cat-')) {
       const idx = parseInt(nav.split('-')[1]);
@@ -878,16 +870,17 @@ function updateNavActive(path) {
 function showHero() {
   hero.classList.remove('hidden');
   contentSection.classList.remove('visible');
+  contentSection.style.opacity = ''; contentSection.style.transform = '';
   document.title = '鸿勋';
   window.scrollTo({ top: 0 });
   updateNavActive('');
 }
 
 function showContent(title, html, comments, sectionIdx, path) {
+  // Step 1: fade out hero first
   hero.classList.add('hidden');
-  setSectionColor(sectionIdx);
 
-  // Update page header
+  // Step 2: update content
   if (pageHeader) {
     const tag = pageHeader.querySelector('.section-tag');
     if (tag) {
@@ -899,10 +892,8 @@ function showContent(title, html, comments, sectionIdx, path) {
     if (h1) h1.textContent = title;
   }
 
-  // Update content
   if (prose) {
     prose.innerHTML = html;
-    // Re-render code blocks with syntax highlighting if needed
   }
 
   // Update comments
@@ -925,7 +916,6 @@ function showContent(title, html, comments, sectionIdx, path) {
     }
   }
 
-  // Update comment form action
   if (commentForm && commentForm.querySelector('input[name="page_path"]')) {
     commentForm.querySelector('input[name="page_path"]').value = path;
   }
@@ -933,12 +923,52 @@ function showContent(title, html, comments, sectionIdx, path) {
   document.title = title + ' — 鸿勋';
   updateNavActive(path);
 
-  // Show content with animation
-  requestAnimationFrame(() => {
-    contentSection.classList.add('visible');
+  // Step 3: after hero fades out, show content with scale-in
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      contentSection.classList.add('visible');
+    });
+    window.scrollTo({ top: 0 });
+  }, 320);
+}
+
+function showCategoryListing(category, sectionIdx) {
+  const fileList = [];
+  (category.files || []).forEach(f => {
+    const displayName = f.includes('-') ? f.substring(f.indexOf('-') + 1) : f;
+    fileList.push({ displayName, filePath: '/' + category.name + '/' + f, subdir: '' });
+  });
+  (category.children || []).forEach(child => {
+    (child.files || []).forEach(f => {
+      const displayName = f.includes('-') ? f.substring(f.indexOf('-') + 1) : f;
+      fileList.push({ displayName, filePath: '/' + category.name + '/' + child.name + '/' + f, subdir: child.name });
+    });
   });
 
-  window.scrollTo({ top: 0 });
+  const listHtml = fileList.map(item =>
+    `<a href="${item.filePath}" class="listing-item" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;text-decoration:none;color:var(--text);transition:all 0.2s ease;margin-bottom:8px;border:1px solid var(--border-light);background:var(--bg-card);box-shadow:var(--shadow-sm)"
+        onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateX(4px)'"
+        onmouseout="this.style.borderColor='';this.style.transform=''">
+      <span style="font-size:1rem">📄</span>
+      <div>
+        <div style="font-weight:500;font-size:0.95rem">${escapeHtml(item.displayName)}</div>
+        ${item.subdir ? `<span style="font-size:0.72rem;color:var(--text-muted)">${escapeHtml(item.subdir)}</span>` : ''}
+      </div>
+      <span style="margin-left:auto;font-size:0.7rem;color:var(--text-muted)">→</span>
+    </a>`
+  ).join('');
+
+  const displayName = category.name.includes('-') ? category.name.substring(category.name.indexOf('-') + 1) : category.name;
+  const emoji = sectionEmojis[sectionIdx] || '📄';
+  const listingHtml = `
+    <div class="page-header">
+      <div class="section-tag"><span class="section-dot"></span> ${emoji} ${displayName}</div>
+      <h1>${displayName}</h1>
+      <div class="divider"></div>
+    </div>
+    <div style="display:flex;flex-direction:column">${listHtml}</div>
+  `;
+  showContent(displayName, listingHtml, [], sectionIdx, category.name + '/index');
 }
 
 function escapeHtml(str) {
@@ -951,20 +981,32 @@ function escapeHtml(str) {
 // 4. NAVIGATION INTERCEPT
 // ══════════════════════════════════════════
 
+const navTreeData = JSON.parse(document.getElementById('navTreeData').textContent);
+
 document.addEventListener('click', async e => {
-  const link = e.target.closest('a[data-nav]');
-  if (!link) return;
+  const link = e.target.closest('a[data-nav], a[href^="/"]:not([href*="://"])');
+  if (!link || !link.getAttribute('href')) return;
 
   const href = link.getAttribute('href');
   if (!href || href === '#' || href.startsWith('http')) return;
 
   e.preventDefault();
 
-  // If home, show hero
+  // Home: show hero
   if (link.dataset.nav === 'home' && (href === '/' || href === '')) {
     showHero();
     window.history.pushState({}, '', '/');
     return;
+  }
+
+  // Category nav: show listing of all files
+  if (link.dataset.nav && link.dataset.nav.startsWith('cat-')) {
+    const idx = parseInt(link.dataset.nav.split('-')[1]);
+    if (idx >= 0 && idx < navTreeData.length) {
+      showCategoryListing(navTreeData[idx], idx);
+      window.history.pushState({}, '', href);
+      return;
+    }
   }
 
   // Fetch content
