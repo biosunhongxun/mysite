@@ -347,7 +347,7 @@ body{
 
 /* ── Prose ── */
 .prose{font-size:1.05rem;line-height:1.8;color:var(--text)}
-.prose h1{font-size:1.8rem;font-weight:700;margin-bottom:1.5rem;letter-spacing:-.02em;line-height:1.25;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.prose h1{font-size:1.8rem;font-weight:700;margin-bottom:1.5rem;letter-spacing:-.02em;line-height:1.25;color:var(--text)}
 .prose h2{font-size:1.45rem;font-weight:600;margin-top:2rem;margin-bottom:.75rem;padding-bottom:.35rem;border-bottom:1px solid var(--border-light)}
 .prose h3{font-size:1.2rem;font-weight:600;margin-top:1.6rem;margin-bottom:.5rem}
 .prose p{margin-bottom:1rem}
@@ -475,7 +475,6 @@ body{
   .content-section{padding:20px 14px 0}
   .glass-card{padding:20px 18px;border-radius:var(--radius-md)}
   .glass-card-comments{padding:18px 16px}
-  .prose h1{font-size:1.4rem}
   .prose{font-size:.95rem}
   .prose h2{font-size:1.25rem}
   .back-top{bottom:1rem;right:1rem;width:34px;height:34px;font-size:.8rem}
@@ -805,10 +804,7 @@ function showContent(title,html,comments,sectionIdx,path){
       tag.innerHTML=`<span class="section-dot"></span> ${emoji} ${name}`;
     }
   }
-  if(prose){
-    if(!html.trimStart().startsWith('<h1'))html='<h1>'+title+'</h1>\n'+html;
-    prose.innerHTML=html;
-  }
+  if(prose)prose.innerHTML=html;
 
   // Comments
   if(commentsList){
