@@ -265,6 +265,30 @@ body{
   0%,100%{opacity:.15;transform:scale(1)}
   50%{opacity:.9;transform:scale(1.5)}
 }
+
+/* ── Meteor ── */
+.meteor{
+  position:absolute;width:2px;height:2px;
+  background:#fff;border-radius:50%;
+  box-shadow:0 0 0 1px rgba(255,255,255,.1),
+              0 0 0 2px rgba(255,255,255,.05),
+              0 0 4px 2px rgba(255,255,255,.1);
+  z-index:1;
+  animation:meteorFall var(--dur) ease-out var(--delay) infinite;
+  opacity:0;
+}
+.meteor::after{
+  content:'';position:absolute;
+  top:50%;transform:translateY(-50%);
+  width:120px;height:1px;
+  background:linear-gradient(to left,rgba(255,255,255,.4),transparent);
+  right:2px;
+}
+@keyframes meteorFall{
+  0%{opacity:1;transform:translate(0,0)}
+  70%{opacity:1}
+  100%{opacity:0;transform:translate(-300px,300px)}
+}
 .hero-silhouette{
   position:absolute;bottom:0;left:0;right:0;height:25%;
   background:linear-gradient(180deg,transparent,rgba(118,104,154,.15) 50%,rgba(27,43,65,.3) 100%);
@@ -476,11 +500,14 @@ body{
 <!-- ═══ SIDEBAR ═══ -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <a href="/" class="sidebar-logo" data-nav="home" style="text-decoration:none">⛰️</a>
-    <span class="sidebar-brand">鸿勋</span>
+    <a href="/" class="sidebar-logo" style="text-decoration:none">⛰️</a>
+    <span class="sidebar-brand">SunHongxun'S Site</span>
   </div>
 
   <nav class="sidebar-body" id="sidebarBody">
+    <div class="sidebar-cat">
+      <a href="/" style="display:flex;align-items:center;gap:8px;padding:10px 20px;font-size:.9rem;font-weight:600;color:var(--text);text-decoration:none;border-left:3px solid transparent;transition:all .2s ease;font-family:var(--font-serif);letter-spacing:.02em" id="homeBtn" class="sidebar-home-btn">🏠 封面</a>
+    </div>
     {% for cat in nav_tree %}
     {% set prefix = cat.name[:2] %}
     {% set cat_id = 'cat-' ~ loop.index0 %}
@@ -534,6 +561,7 @@ body{
   <section class="hero" id="hero">
     <div class="hero-bg"></div>
     <div class="stars" id="stars"></div>
+    <div class="meteors" id="meteors"></div>
     <div class="hero-silhouette"></div>
     <div class="hero-content">
       <div class="hero-brand">SunHongxun'S Site</div>
@@ -617,6 +645,26 @@ body{
     c.appendChild(s);
   }
 })();
+
+
+// Meteors
+(function(){
+  const c=document.getElementById('meteors');
+  if(!c)return;
+  for(let i=0;i<3;i++){
+    const m=document.createElement('div');m.className='meteor';
+    m.style.cssText=`top:${5+Math.random()*25}%;left:${60+Math.random()*35}%;--dur:${2+Math.random()}s;--delay:${3+i*5+Math.random()*3}s`;
+    c.appendChild(m);
+  }
+})();
+
+// Home button
+const homeBtn=document.getElementById('homeBtn');
+if(homeBtn){
+  homeBtn.addEventListener('click',function(e){
+    e.preventDefault();showHero();window.history.pushState({},'','/');
+  });
+}
 
 // ══════════════════════════════════════════
 // 2. THEME
