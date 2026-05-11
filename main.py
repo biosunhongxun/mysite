@@ -1,0 +1,173 @@
+from fastapi import FastAPI, Request, Form
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+import markdown
+import os
+import sqlite3
+from pathlib import Path
+
+app = FastAPI()
+templates = Jinja2Templates(directory="templates")
+
+KNOWLEDGE_BASE_DIR = Path("/home/ubuntu/个人知识网站")
+
+
+# ── 留言板数据库 ──
+
+def init_db():
+    conn = sqlite3.connect('comments.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS comments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            page_path TEXT,
+            username TEXT,
+            content TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+init_db()
+
+
+# ── 目录树（支持嵌套子目录）──
+
+def get_directory_tree(base_dir):
+    """递归构建导航树，支持多级子目录"""
+    tree = []
+    for item in sorted(os.listdir(base_dir)):
+        item_path = base_dir / item
+        if not item_path.is_dir():
+            continue
+
+        # 本级 .md 文件
+        files = sorted([
+            f.name.replace('.md', '')
+            for f in item_path.glob("*.md")
+        ])
+
+        # 子目录（嵌套层级）
+        children = []
+        for sub in sorted(os.listdir(item_path)):
+            sub_path = item_path / sub
+            if sub_path.is_dir():
+                nested = sorted([
+                    f.name.replace('.md', '')
+                    for f in sub_path.glob("*.md")
+                ])
+                if nested:
+                    children.append({
+                        "name": sub,
+                        "files": nested
+                    })
+
+        entry = {"name": item, "files": files}
+        if children:
+            entry["children"] = children
+        tree.append(entry)
+
+    return tree
+
+
+# ── JSON 导航 API（供前端动态渲染）──
+
+@app.get("/api/nav", response_class=JSONResponse)
+async def nav_api():
+    return get_directory_tree(KNOWLEDGE_BASE_DIR)
+
+
+# ── 从 Markdown 提取标题 ──
+
+def extract_title(md_text: str, fallback: str) -> str:
+    for line in md_text.strip().split("\n"):
+        line = line.strip()
+        if line.startswith("# "):
+            return line[2:].strip()
+    stem = Path(fallback).stem
+    if "-" in stem:
+        return stem.split("-", 1)[1]
+    return stem
+
+
+# ── Markdown → HTML ──
+
+def render_markdown(md_text: str) -> str:
+    return markdown.markdown(
+        md_text,
+        extensions=[
+            "extra",           # 表格、脚注、定义列表
+            "codehilite",      # 代码高亮
+            "toc",             # 目录
+            "md_in_html",      # HTML 内部解析 Markdown
+        ],
+    )
+
+
+# ── 核心路由 ──
+
+@app.get("/", response_class=HTMLResponse)
+@app.get("/{file_path:path}", response_class=HTMLResponse)
+async def read_page(request: Request, file_path: str = ""):
+    # 默认首页
+    target_md = file_path if file_path else "01-关于我/个人简介"
+    if not target_md.endswith(".md"):
+        target_md += ".md"
+
+    target_file = KNOWLEDGE_BASE_DIR / target_md
+
+    content_html = ""
+    page_title = "鸿勋"
+    page_exists = target_file.exists() and target_file.is_file()
+
+    if page_exists:
+        md_text = target_file.read_text(encoding="utf-8")
+        page_title = extract_title(md_text, target_md)
+        content_html = render_markdown(md_text)
+    else:
+        content_html = '<div class="not-found"><h1>404</h1><p>页面未找到</p></div>'
+
+    nav_tree = get_directory_tree(KNOWLEDGE_BASE_DIR)
+
+    # 留言
+    conn = sqlite3.connect("comments.db")
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT username, content, timestamp FROM comments WHERE page_path=? ORDER BY timestamp DESC",
+        (target_md,),
+    )
+    comments = cursor.fetchall()
+    conn.close()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "content": content_html,
+            "nav_tree": nav_tree,
+            "current_path": target_md,
+            "comments": comments,
+            "page_title": page_title,
+        },
+    )
+
+
+# ── 提交留言 ──
+
+@app.post("/submit_comment")
+async def submit_comment(
+    page_path: str = Form(...),
+    username: str = Form(...),
+    content: str = Form(...),
+):
+    conn = sqlite3.connect("comments.db")
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO comments (page_path, username, content) VALUES (?, ?, ?)",
+        (page_path, username, content),
+    )
+    conn.commit()
+    conn.close()
+    return HTMLResponse(f"<script>location.href='/{page_path}'</script>")
