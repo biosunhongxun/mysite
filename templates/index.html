@@ -130,12 +130,14 @@ body{
 .sidebar-cat-header{
   display:flex;align-items:center;gap:8px;
   padding:10px 20px;
-  font-size:.82rem;font-weight:600;
-  color:var(--text-secondary);
+  font-size:.9rem;font-weight:600;
+  color:var(--text);
   cursor:pointer;
   border-left:3px solid transparent;
   transition:all .2s ease;
   user-select:none;
+  font-family:var(--font-serif);
+  letter-spacing:.02em;
 }
 .sidebar-cat-header:hover{color:var(--text);background:var(--accent-soft)}
 .sidebar-cat-header .arrow{
@@ -154,7 +156,7 @@ body{
 .sidebar-item{
   display:flex;align-items:center;gap:8px;
   padding:7px 20px 7px 44px;
-  font-size:.8rem;color:var(--text-secondary);
+  font-size:.85rem;color:var(--text);
   text-decoration:none;
   border-left:3px solid transparent;
   transition:all .2s ease;
@@ -166,8 +168,8 @@ body{
 /* ── Subdir label ── */
 .sidebar-subdir-label{
   padding:6px 20px 2px 32px;
-  font-size:.7rem;font-weight:500;
-  color:var(--text-muted);
+  font-size:.78rem;font-weight:500;
+  color:var(--text-secondary);
   letter-spacing:.03em;
 }
 .sidebar-subdir-item{padding-left:52px}
@@ -540,28 +542,29 @@ body{
 
   <!-- Content -->
   <section class="content-section" id="contentSection">
-    {% if current_path %}
-    <!-- Article card -->
+    <!-- Article card (always in DOM, JS fills content) -->
     <div class="glass-card" id="articleCard">
       <div class="page-header">
         {% set section_prefix = current_path[:2] if current_path and '-' in current_path[:4] else '' %}
         {% set emoji_map = {'01':'📋','02':'🔬','03':'📖','04':'🗄️','05':'✍️'} %}
-        <div class="section-tag">
+        <div class="section-tag" id="sectionTag">
+          {% if current_path %}
           <span class="section-dot"></span>
           {% if section_prefix and section_prefix in emoji_map %}{{ emoji_map[section_prefix] }}{% endif %}
           {% if section_prefix == '01' %}关于我{% elif section_prefix == '02' %}我的研究{% elif section_prefix == '03' %}实验手册{% elif section_prefix == '04' %}抽屉{% elif section_prefix == '05' %}随笔{% endif %}
+          {% endif %}
         </div>
-        <h1>{{ page_title }}</h1>
+        <h1 id="pageTitle">{{ page_title if current_path else '' }}</h1>
         <div class="divider"></div>
       </div>
-      <div class="prose">{{ content | safe }}</div>
+      <div class="prose" id="prose">{% if current_path %}{{ content | safe }}{% endif %}</div>
     </div>
 
     <!-- Comments -->
     <div class="glass-card-comments comment-section" id="commentSection">
       <h3>💬 留言</h3>
       <form class="comment-form" id="commentForm">
-        <input type="hidden" name="page_path" value="{{ current_path }}">
+        <input type="hidden" name="page_path" id="commentPagePath" value="{{ current_path if current_path else '' }}">
         <div class="comment-row">
           <input type="text" name="username" placeholder="你的昵称" required class="comment-input">
         </div>
@@ -569,6 +572,7 @@ body{
         <button type="submit" class="btn-send">发送</button>
       </form>
       <div id="commentsList">
+        {% if comments %}
         {% for c in comments %}
         <div class="comment-item">
           <div class="header">
@@ -580,12 +584,12 @@ body{
           </div>
           <p class="text">{{ c[1] }}</p>
         </div>
-        {% else %}
-        <div class="empty-comments" id="emptyComments">✨ 暂无留言</div>
         {% endfor %}
+        {% else %}
+        <div class="empty-comments">✨ 暂无留言</div>
+        {% endif %}
       </div>
     </div>
-    {% endif %}
 
     <footer class="footer">© 2026 鸿勋 · 以 Markdown 书写</footer>
   </section>
