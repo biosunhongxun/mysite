@@ -1,22 +1,34 @@
 from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles
 import markdown
 import os
 import sqlite3
 from pathlib import Path
 
-app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+# ── 路径解析 ──
+HERE = Path(__file__).resolve().parent          # app/
+PROJECT_ROOT = HERE.parent                      # mysite（项目根目录）
 
-KNOWLEDGE_BASE_DIR = Path("/home/ubuntu/个人知识网站")
+# 内容目录：环境变量优先，未设则默认 <项目根>/个人知识网站
+KNOWLEDGE_BASE_DIR = Path(
+    os.getenv("KNOWLEDGE_BASE_DIR", PROJECT_ROOT / "个人知识网站")
+)
+
+# 模板目录：始终相对于项目根
+TEMPLATES_DIR = PROJECT_ROOT / "templates"
+templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
+
+# 数据库路径：环境变量可覆盖
+DB_PATH = os.getenv("COMMENTS_DB_PATH", str(PROJECT_ROOT / "comments.db"))
+
+app = FastAPI()
 
 
 # ── 留言板数据库 ──
 
 def init_db():
-    conn = sqlite3.connect('comments.db')
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS comments (
@@ -132,7 +144,7 @@ async def read_page(request: Request, file_path: str = ""):
     nav_tree = get_directory_tree(KNOWLEDGE_BASE_DIR)
 
     # 留言
-    conn = sqlite3.connect("comments.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(
         "SELECT username, content, timestamp FROM comments WHERE page_path=? ORDER BY timestamp DESC",
@@ -162,7 +174,7 @@ async def submit_comment(
     username: str = Form(...),
     content: str = Form(...),
 ):
-    conn = sqlite3.connect("comments.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(
         "INSERT INTO comments (page_path, username, content) VALUES (?, ?, ?)",

@@ -1,0 +1,7 @@
+查看运行状态： sudo systemctl status geneflow
+
+重启网站服务： sudo systemctl restart geneflow
+
+停止网站服务： sudo systemctl stop geneflow
+
+查看运行日志： journalctl -u geneflow -f

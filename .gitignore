@@ -1,0 +1,22 @@
+# Python artifacts
+__pycache__/
+.venv/
+.venv/*
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Runtime data (per-environment, not part of repo)
+*.db
+
+# Environment config with secrets
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE project directories
+.vscode/
+.idea/
