@@ -180,7 +180,7 @@ async def read_page(request: Request, file_path: str = ""):
                 "nav_tree": nav_tree,
                 "current_path": "",
                 "comments": [],
-                "page_title": "鸿勋",
+                "page_title": "SunHongxun`s site",
             },
         )
 
